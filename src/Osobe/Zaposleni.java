@@ -1,5 +1,7 @@
 package Osobe;
 
+import java.time.LocalDate;
+
 public abstract class Zaposleni extends Osoba{
 	private String korisnickoIme;
 	private String korisnickaSifra;
@@ -41,7 +43,11 @@ public abstract class Zaposleni extends Osoba{
 		this.plata = plata;
 	}
 	
-	
+	public ClanBiblioteke dodajClana(int id, String ime, String prezime, String jMBG, String adresa, Pol pol, String brClanKarte,
+			TipClanarine tipclanarine, LocalDate datumPoslednjeUplate, int brojMeseciClanarine, boolean isActive) {
+		ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tipclanarine, datumPoslednjeUplate, brojMeseciClanarine, isActive);
+		return clan;
+	}
 	
 	
 }

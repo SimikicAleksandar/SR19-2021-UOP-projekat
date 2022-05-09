@@ -1,6 +1,6 @@
 package knjige;
 
-public class Knjiga extends ZanrKnjige{
+public class Knjiga{
 	private int id ;
 	private String naslovKnjige ;
 	private String originalNaslovKnjige ;
@@ -10,9 +10,13 @@ public class Knjiga extends ZanrKnjige{
 	private String opis ;
 	private ZanrKnjige zanr;
 	
-	public Knjiga(String oznaka, String opisZanra, int id, String naslovKnjige, String originalNaslovKnjige,
-			String pisac, int godinaObjavljivanja, String jezikOriginala, String opis, ZanrKnjige zanr) {
-		super(oznaka, opisZanra);
+	public Knjiga() {
+		super();
+	}
+
+	public Knjiga(int id, String naslovKnjige, String originalNaslovKnjige, String pisac, int godinaObjavljivanja,
+			String jezikOriginala, String opis, ZanrKnjige zanr) {
+		super();
 		this.id = id;
 		this.naslovKnjige = naslovKnjige;
 		this.originalNaslovKnjige = originalNaslovKnjige;
@@ -21,10 +25,6 @@ public class Knjiga extends ZanrKnjige{
 		this.jezikOriginala = jezikOriginala;
 		this.opis = opis;
 		this.zanr = zanr;
-	}
-
-	public Knjiga() {
-		super();
 	}
 
 	public int getId() {
@@ -90,6 +90,8 @@ public class Knjiga extends ZanrKnjige{
 	public void setZanr(ZanrKnjige zanr) {
 		this.zanr = zanr;
 	}
+	
+	
 	
 	
 	

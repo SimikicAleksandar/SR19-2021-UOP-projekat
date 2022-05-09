@@ -12,6 +12,6 @@ public class Bibliotekar extends Zaposleni{
 		super(id, ime, prezime, jMBG, adresa, pol, korisnickoIme, korisnickaSifra, plata);
 	}
 
-	
+
 
 }
