@@ -3,6 +3,7 @@ package Biblioteka;
 import java.util.ArrayList;
 
 import Osobe.Adminisatrator;
+import Osobe.Bibliotekar;
 import Osobe.Pol;
 
 public class BibliotekaMain {
@@ -22,5 +23,21 @@ public class BibliotekaMain {
 		biblioteka.snimiAdministratore();
 		
 	}
+	*/ 
+	/*
+	public static void main(String[] args) {
+		Biblioteka biblioteka = new Biblioteka();
+		biblioteka.ucitajBibliotekare();
+		for(Bibliotekar bibliotekar : biblioteka.getBibliotekari()) {
+			System.out.println(bibliotekar.getKorisnickoIme());
+		}
+		
+		Bibliotekar bibliotekar = new Bibliotekar(002, "ALEKSANDAR", "DOKTORIRAOJAVU", "12313212312312", "BULEVAR JAVE", Pol.valueOf("MUSKI"), "RADI", "MOLIMTE", 9999999.00);
+		ArrayList<Bibliotekar> bibliotekari = new ArrayList<Bibliotekar>();
+		bibliotekari.add(bibliotekar);
+		biblioteka.setBibliotekari(bibliotekari);
+		biblioteka.snimiBibliotekari();
+	}
 	*/
+	
 }

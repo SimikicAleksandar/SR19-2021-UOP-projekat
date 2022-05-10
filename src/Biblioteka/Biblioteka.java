@@ -111,4 +111,67 @@ public class Biblioteka {
 		}
 	}
 	
+	//Funkcije za ucitavanje i snimanje bibliotekara
+	
+	public void ucitajBibliotekare() {
+		try {
+			File korisniciFile = new File("src/fajlovi/bibliotekari.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				int id = Integer.parseInt(lineSplit[0]);
+				String ime = lineSplit[1];
+				String prezime = lineSplit[2];
+				String jMBG = lineSplit[3];
+				String adresa = lineSplit[4];
+				Pol pol = Pol.valueOf(lineSplit[5]);
+				String korisnickoIme = lineSplit[6];
+				String korisnickaSifra = lineSplit[7];
+				double plata = Double.parseDouble(lineSplit[8]);
+				Bibliotekar bibliotekar = new Bibliotekar(id, ime, prezime, jMBG, adresa, pol, korisnickoIme, korisnickaSifra, plata);
+				this.bibliotekari.add(bibliotekar);
+			}
+		} catch (IOException e) {
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
+	
+	public void snimiBibliotekari() {
+		String sadrzaj = "";
+		for (Bibliotekar bibliotekar : this.bibliotekari) {
+			sadrzaj += bibliotekar.getId()+ "|"  + bibliotekar.getIme()+ "|" + bibliotekar.getPrezime() + "|" + bibliotekar.getJMBG() + "|" + bibliotekar.getAdresa()  + "|" + bibliotekar.getPol()  + "|" + bibliotekar.getKorisnickoIme() + 
+					"|" + bibliotekar.getKorisnickaSifra()   + "|" + bibliotekar.getPlata() +"\n";
+		}
+		try {
+			File korisniciFile = new File("src/fajlovi/bibliotekari.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
+			writer.write(sadrzaj);
+			writer.close();
+		}catch(IOException e){
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
 }
