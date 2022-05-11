@@ -6,6 +6,7 @@ import java.io.File;
 import java.io.FileReader;
 import java.io.FileWriter;
 import java.io.IOException;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Osobe.Adminisatrator;
@@ -70,7 +71,7 @@ public class Biblioteka {
 	}
 	
 	
-	//Funkcije za ucitavanje i snimanje administratora
+	//Funkcije za ucitavanje i snimanje Administratora
 	public void ucitajAdministratore() {
 		try {
 			File korisniciFile = new File("src/fajlovi/administratori.txt");
@@ -111,7 +112,7 @@ public class Biblioteka {
 		}
 	}
 	
-	//Funkcije za ucitavanje i snimanje bibliotekara
+	//Funkcije za ucitavanje i snimanje Bibliotekara
 	
 	public void ucitajBibliotekare() {
 		try {
@@ -153,21 +154,136 @@ public class Biblioteka {
 		}
 	}
 	
+	//Funkcije za ucitavanje i snimanje Clanova Biblioteke i tipa clanarine ;
 	
 	
 	
+	public void ucitajClanove() {
+		try {
+			File korisniciFile = new File("src/fajlovi/clanovi.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				int id = Integer.parseInt(lineSplit[0]);
+				String ime = lineSplit[1];
+				String prezime = lineSplit[2];
+				String jMBG = lineSplit[3];
+				String adresa = lineSplit[4];
+				Pol pol = Pol.valueOf(lineSplit[5]);
+				String brClanKarte = lineSplit[6];
+				
+				//TipClanarine tip = this.
+						
+				LocalDate datumPoslednjeUplate = LocalDate.parse(lineSplit[8]);
+				int brojMeseciClanarine = Integer.parseInt(lineSplit[9]);
+				boolean isActive = Boolean.parseBoolean(lineSplit[10]);
+				ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tip, datumPoslednjeUplate, brojMeseciClanarine, isActive);
+				this.clanovi.add(clan);
+			}
+		} catch (IOException e) {
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
+	public void snimiClanove() {
+		String sadrzaj = "";
+		for (ClanBiblioteke clan : this.clanovi) {
+			sadrzaj += clan.getId()+ "|"  + clan.getIme()+ "|" + clan.getPrezime() + "|" + clan.getJMBG() + "|" + clan.getAdresa()  + "|" + clan.getPol()  + "|" + clan.getBrClanKarte() + 
+					"|" + /*clan.getTipClanarine() + "|" +*/clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "\n";
+		}
+		try {
+			File korisniciFile = new File("src/fajlovi/clanovi.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
+			writer.write(sadrzaj);
+			writer.close();
+		}catch(IOException e){
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
+	//Funkcije za ucitavanje i snimanje knjiga, zanra i trazenje zanra
+	public void ucitajZanr() {
+		try {
+			File korisniciFile = new File("src/fajlovi/zanrovi.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				String oznaka = lineSplit[0];
+				String opisZanra = lineSplit[1];
+				
+				ZanrKnjige zanr = new ZanrKnjige(oznaka, opisZanra);
+				this.zanrovi.add(zanr);
+			}
+		} catch (IOException e) {
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
+	public void snimiZanr() {
+		String sadrzaj = "";
+		for (ZanrKnjige zanr : this.zanrovi) {
+			sadrzaj += zanr.getOznaka() + "|"  + zanr.getOpisZanra()  + "\n";
+		}
+		try {
+			File korisniciFile = new File("src/fajlovi/zanrovi.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
+			writer.write(sadrzaj);
+			writer.close();
+		}catch(IOException e){
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
+	public ZanrKnjige nadjiZanr(int id) {
+        ZanrKnjige trazeni = null;
+        for(int i = 0; i < this.zanrovi.size(); i++) {
+            if (this.zanrovi.get(i).getId() == id) {
+                trazeni = this.zanrovi.get(i);
+            }
+        }
+        return trazeni;
+        }
 	
+	public void ucitajKnjige() {
+		try {
+			File korisniciFile = new File("src/fajlovi/knjiga.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				int id = Integer.parseInt(lineSplit[0]);
+				String naslovKnjige = lineSplit[1];
+				String originalNaslovKnjige = lineSplit[2];
+				String pisac = lineSplit[3];
+				int godinaObjavljivanja = Integer.parseInt(lineSplit[4]);
+				String jezikOriginala = lineSplit[5];
+				String opis = lineSplit[6];
+				ZanrKnjige zanr = this.nadjiZanr(Integer.parseInt(lineSplit[7])); 
+				Knjiga knjiga = new Knjiga(id, naslovKnjige, originalNaslovKnjige, pisac, godinaObjavljivanja, jezikOriginala, opis, zanr);
+				this.knjige.add(knjiga);
+			}
+		} catch (IOException e) {
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
-	
-	
-	
-	
-	
-	
+	public void snimiKnjige() {
+		String sadrzaj = "";
+		for (Knjiga knjiga : this.knjige) {
+			sadrzaj += knjiga.getId()+ "|"  + knjiga.getNaslovKnjige() + "|" + knjiga.getOriginalNaslovKnjige() + "|" + knjiga.getPisac()+ "|" + knjiga.getGodinaObjavljivanja()  + "|" + knjiga.getJezikOriginala() + "|" + knjiga.getOpis() + 
+					"|" + knjiga.getZanr() +"\n";
+		}
+		try {
+			File korisniciFile = new File("src/fajlovi/administratori.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
+			writer.write(sadrzaj);
+			writer.close();
+		}catch(IOException e){
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
 	
 	

@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import Osobe.Adminisatrator;
 import Osobe.Bibliotekar;
 import Osobe.Pol;
+import knjige.Knjiga;
 
 public class BibliotekaMain {
 /*
@@ -39,5 +40,21 @@ public class BibliotekaMain {
 		biblioteka.snimiBibliotekari();
 	}
 	*/
+	public static void main(String[] args) {
+		Biblioteka biblioteka = new Biblioteka();
+		biblioteka.ucitajKnjige();
+		for(Knjiga knjiga : biblioteka.getKnjige()) {
+			System.out.println(knjiga.getZanr());
+			
+		
+		}
+		/*
+		Knjiga knjiga = new Knjiga(123, "IMEKNJIGE", "LAGANADESETKA", "STIRNOAIBNSOI", 2022, "Ruski", "MOJAOCENA", "001");
+		ArrayList<Knjiga> knjige = new ArrayList<Knjiga>();
+		knjige.add(knjiga);
+		biblioteka.setKnjige(knjige);
+		biblioteka.snimiKnjige(knjige);
+		*/
+	}
 	
 }

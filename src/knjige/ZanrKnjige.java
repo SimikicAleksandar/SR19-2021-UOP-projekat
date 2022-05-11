@@ -29,6 +29,11 @@ public class ZanrKnjige {
 	public void setOpisZanra(String opisZanra) {
 		this.opisZanra = opisZanra;
 	}
+
+	public int getId() {
+		// TODO Auto-generated method stub
+		return 0;
+	}
 	
 	
 	
