@@ -1,8 +1,1 @@
 001|123|TVRD|1989|SRPSKI|True
-
-	private Knjiga knjiga ;
-	private int brStrana;
-	private TipPoveza tip;
-	private int godinaStampanja;
-	private String jezikStampanja;
-	private boolean daLiJeIznajmljena;

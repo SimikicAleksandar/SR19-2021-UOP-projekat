@@ -1,9 +1,9 @@
 package knjige;
 
 public class ZanrKnjige {
-	private String oznaka ;
+	private String oznaka;
 	private String opisZanra;
-	
+
 	public ZanrKnjige(String oznaka, String opisZanra) {
 		super();
 		this.oznaka = oznaka;
@@ -25,16 +25,10 @@ public class ZanrKnjige {
 	public String getOpisZanra() {
 		return opisZanra;
 	}
-
+   
 	public void setOpisZanra(String opisZanra) {
 		this.opisZanra = opisZanra;
 	}
 
-	public int getId() {
-		// TODO Auto-generated method stub
-		return 0;
-	}
-	
-	
 	
 }

@@ -4,8 +4,10 @@ import java.util.ArrayList;
 
 import Osobe.Adminisatrator;
 import Osobe.Bibliotekar;
+import Osobe.ClanBiblioteke;
 import Osobe.Pol;
 import knjige.Knjiga;
+import knjige.ZanrKnjige;
 
 public class BibliotekaMain {
 /*
@@ -40,21 +42,29 @@ public class BibliotekaMain {
 		biblioteka.snimiBibliotekari();
 	}
 	*/
+	/*
 	public static void main(String[] args) {
+		
 		Biblioteka biblioteka = new Biblioteka();
+		ArrayList<Knjiga> knjige = new ArrayList<Knjiga>();
+		biblioteka.setKnjige(knjige);
 		biblioteka.ucitajKnjige();
 		for(Knjiga knjiga : biblioteka.getKnjige()) {
 			System.out.println(knjiga.getZanr());
-			
-		
 		}
-		/*
-		Knjiga knjiga = new Knjiga(123, "IMEKNJIGE", "LAGANADESETKA", "STIRNOAIBNSOI", 2022, "Ruski", "MOJAOCENA", "001");
-		ArrayList<Knjiga> knjige = new ArrayList<Knjiga>();
-		knjige.add(knjiga);
-		biblioteka.setKnjige(knjige);
-		biblioteka.snimiKnjige(knjige);
-		*/
+	} */
+	public static void main(String[] args) {
+		Biblioteka biblioteka = new Biblioteka();
+		biblioteka.ucitajClanove();
+		for(ClanBiblioteke clan : biblioteka.getClanovi()) {
+			System.out.println(clan.getPrezime());
+		}
+		
+		ClanBiblioteke clan = new ClanBiblioteke(002, "ALEKSANDAR", "DOKTORIRAOJAVU", "12313212312312", "BULEVAR JAVE", Pol.valueOf("MUSKI"), "RADI", "MOLIMTE", 004,LocalDate.valueOf(2021-08-24),11,);
+		ArrayList<ClanBiblioteke> clanovi = new ArrayList<ClanBiblioteke>();
+		clanovi.add(clan);
+		biblioteka.setClanovi(clanovi);
+		biblioteka.snimiClanove();
+		
 	}
-	
 }

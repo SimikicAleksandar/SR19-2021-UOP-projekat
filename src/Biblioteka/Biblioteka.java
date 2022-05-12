@@ -13,17 +13,56 @@ import Osobe.Adminisatrator;
 import Osobe.Bibliotekar;
 import Osobe.ClanBiblioteke;
 import Osobe.Pol;
+import Osobe.TipClanarine;
 import knjige.Knjiga;
 import knjige.PrimerakKnjige;
+import knjige.TipPoveza;
 import knjige.ZanrKnjige;
 
 public class Biblioteka {
+	//Za samu biblioteku postoje podaci o nazivu, adresi, telefonu i radnom vremenu
+	private String naziv;
+	private String adresa;
+	private String telefon;
+	private String radnoVreme;
 	private ArrayList<Adminisatrator> administratori;
 	private ArrayList<Bibliotekar> bibliotekari;
 	private ArrayList<ClanBiblioteke> clanovi;
 	private ArrayList<Knjiga> knjige;
 	private ArrayList<PrimerakKnjige> primerciKnjiga;
 	private ArrayList<ZanrKnjige> zanrovi;
+	private ArrayList<TipClanarine> tipovi;
+	
+	public String getNaziv() {
+		return naziv;
+	}
+	public void setNaziv(String naziv) {
+		this.naziv = naziv;
+	}
+	public String getAdresa() {
+		return adresa;
+	}
+	public void setAdresa(String adresa) {
+		this.adresa = adresa;
+	}
+	public String getTelefon() {
+		return telefon;
+	}
+	public void setTelefon(String telefon) {
+		this.telefon = telefon;
+	}
+	public String getRadnoVreme() {
+		return radnoVreme;
+	}
+	public void setRadnoVreme(String radnoVreme) {
+		this.radnoVreme = radnoVreme;
+	}
+	public ArrayList<TipClanarine> getTipovi() {
+		return tipovi;
+	}
+	public void setTipovi(ArrayList<TipClanarine> tipovi) {
+		this.tipovi = tipovi;
+	}
 	public Biblioteka() {
 		super();
 		this.administratori = new ArrayList<Adminisatrator>();
@@ -155,8 +194,48 @@ public class Biblioteka {
 	}
 	
 	//Funkcije za ucitavanje i snimanje Clanova Biblioteke i tipa clanarine ;
+	public void ucitajTipClanarine() {
+		try {
+			File korisniciFile = new File("src/fajlovi/tipClanarine.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				int id = Integer.parseInt(lineSplit[0]);
+				String naziv = lineSplit[1];
+				double cena = Double.parseDouble(lineSplit[2]);
+				TipClanarine tip = new TipClanarine(id,naziv,cena);
+				this.tipovi.add(tip);
+			}
+		} catch (IOException e) {
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
+	public void snimiTipClanarine() {
+		String sadrzaj = "";
+		for (TipClanarine tip : this.tipovi) {
+			sadrzaj += tip.getId()+ "|"  + tip.getNaziv()+ "|" + tip.getCena()+ "\n";
+		}
+		try {
+			File korisniciFile = new File("src/fajlovi/tipClanarine.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
+			writer.write(sadrzaj);
+			writer.close();
+		}catch(IOException e){
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
+	public TipClanarine nadjiTipClanarine(int id) {
+        TipClanarine trazeni = null;
+        for(int i = 0; i < this.knjige.size(); i++) {
+            if (this.tipovi.get(i).getId() == id) {
+                trazeni = this.tipovi.get(i);
+            }
+        }
+        return trazeni;
+        }
 	
 	public void ucitajClanove() {
 		try {
@@ -172,9 +251,7 @@ public class Biblioteka {
 				String adresa = lineSplit[4];
 				Pol pol = Pol.valueOf(lineSplit[5]);
 				String brClanKarte = lineSplit[6];
-				
-				//TipClanarine tip = this.
-						
+				TipClanarine tip = this.nadjiTipClanarine(Integer.parseInt(lineSplit[7]));
 				LocalDate datumPoslednjeUplate = LocalDate.parse(lineSplit[8]);
 				int brojMeseciClanarine = Integer.parseInt(lineSplit[9]);
 				boolean isActive = Boolean.parseBoolean(lineSplit[10]);
@@ -190,7 +267,7 @@ public class Biblioteka {
 		String sadrzaj = "";
 		for (ClanBiblioteke clan : this.clanovi) {
 			sadrzaj += clan.getId()+ "|"  + clan.getIme()+ "|" + clan.getPrezime() + "|" + clan.getJMBG() + "|" + clan.getAdresa()  + "|" + clan.getPol()  + "|" + clan.getBrClanKarte() + 
-					"|" + /*clan.getTipClanarine() + "|" +*/clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "\n";
+					"|" + clan.getTipclanarine() + "|" +clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/clanovi.txt");
@@ -236,10 +313,10 @@ public class Biblioteka {
 		}
 	}
 	
-	public ZanrKnjige nadjiZanr(int id) {
+	public ZanrKnjige nadjiZanr(String oznaka) {
         ZanrKnjige trazeni = null;
         for(int i = 0; i < this.zanrovi.size(); i++) {
-            if (this.zanrovi.get(i).getId() == id) {
+            if (this.zanrovi.get(i).getOznaka().equals(oznaka)) {
                 trazeni = this.zanrovi.get(i);
             }
         }
@@ -260,7 +337,7 @@ public class Biblioteka {
 				int godinaObjavljivanja = Integer.parseInt(lineSplit[4]);
 				String jezikOriginala = lineSplit[5];
 				String opis = lineSplit[6];
-				ZanrKnjige zanr = this.nadjiZanr(Integer.parseInt(lineSplit[7])); 
+				ZanrKnjige zanr = this.nadjiZanr(lineSplit[7]) ;
 				Knjiga knjiga = new Knjiga(id, naslovKnjige, originalNaslovKnjige, pisac, godinaObjavljivanja, jezikOriginala, opis, zanr);
 				this.knjige.add(knjiga);
 			}
@@ -276,7 +353,7 @@ public class Biblioteka {
 					"|" + knjiga.getZanr() +"\n";
 		}
 		try {
-			File korisniciFile = new File("src/fajlovi/administratori.txt");
+			File korisniciFile = new File("src/fajlovi/knjiga.txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
 			writer.write(sadrzaj);
 			writer.close();
@@ -285,7 +362,27 @@ public class Biblioteka {
 		}
 	}
 	
-	
+	//Ucitavanje i snimanje primeraka knjgie
+	public void ucitajPrimerakKnjige() {
+		try {
+			File korisniciFile = new File("src/fajlovi/primerakKnjige.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+			String line;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				int brojStrana = Integer.parseInt(lineSplit[1]);
+				TipPoveza tipPoveza = TipPoveza.valueOf(lineSplit[2]);
+				int godinaStampanja = Integer.parseInt(lineSplit[3]);
+				String jezikStampanja = lineSplit[4];
+				boolean daLiJeIznajmljena = Boolean.parseBoolean(lineSplit[5]);
+				
+				PrimerakKnjige primerak = new PrimerakKnjige(knjiga, 124, tipPoveza.valueOf("TVRD"),1999,"Engleski", );
+				this.primerciKnjiga.add(primerak);
+			}
+		} catch (IOException e) {
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
 	
 	
