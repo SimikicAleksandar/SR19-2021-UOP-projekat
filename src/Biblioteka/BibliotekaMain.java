@@ -6,11 +6,12 @@ import Osobe.Adminisatrator;
 import Osobe.Bibliotekar;
 import Osobe.ClanBiblioteke;
 import Osobe.Pol;
+import gui.GlavniProzor;
 import knjige.Knjiga;
 import knjige.ZanrKnjige;
 
 public class BibliotekaMain {
-/*
+
 	public static void main(String[] args) {
 		Biblioteka biblioteka = new Biblioteka();
 		biblioteka.ucitajAdministratore();
@@ -24,9 +25,13 @@ public class BibliotekaMain {
 		administratori.add(administrator);
 		biblioteka.setAdministratori(administratori);
 		biblioteka.snimiAdministratore();
+		GlavniProzor lp = new GlavniProzor(biblioteka);
+	        lp.setVisible(true);
+	        }
 		
-	}
-	*/ 
+
+	
+	
 	/*
 	public static void main(String[] args) {
 		Biblioteka biblioteka = new Biblioteka();
@@ -53,18 +58,18 @@ public class BibliotekaMain {
 			System.out.println(knjiga.getZanr());
 		}
 	} */
-	public static void main(String[] args) {
-		Biblioteka biblioteka = new Biblioteka();
-		biblioteka.ucitajClanove();
-		for(ClanBiblioteke clan : biblioteka.getClanovi()) {
-			System.out.println(clan.getPrezime());
-		}
-		
-		ClanBiblioteke clan = new ClanBiblioteke(002, "ALEKSANDAR", "DOKTORIRAOJAVU", "12313212312312", "BULEVAR JAVE", Pol.valueOf("MUSKI"), "RADI", "MOLIMTE", 004,LocalDate.valueOf(2021-08-24),11,);
-		ArrayList<ClanBiblioteke> clanovi = new ArrayList<ClanBiblioteke>();
-		clanovi.add(clan);
-		biblioteka.setClanovi(clanovi);
-		biblioteka.snimiClanove();
-		
-	}
+//	public static void main(String[] args) {
+//		Biblioteka biblioteka = new Biblioteka();
+//		biblioteka.ucitajClanove();
+//		for(ClanBiblioteke clan : biblioteka.getClanovi()) {
+//			System.out.println(clan.getPrezime());
+//		}
+//		
+//		ClanBiblioteke clan = new ClanBiblioteke(002, "ALEKSANDAR", "DOKTORIRAOJAVU", "12313212312312", "BULEVAR JAVE", Pol.valueOf("MUSKI"), "RADI", "MOLIMTE", 004,LocalDate.valueOf(2021-08-24),11,);
+//		ArrayList<ClanBiblioteke> clanovi = new ArrayList<ClanBiblioteke>();
+//		clanovi.add(clan);
+//		biblioteka.setClanovi(clanovi);
+//		biblioteka.snimiClanove();
+//		
+//	}
 }
