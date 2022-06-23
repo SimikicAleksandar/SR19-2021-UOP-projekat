@@ -1,6 +1,5 @@
 package gui;
 
-import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
 import java.awt.event.ActionEvent;
@@ -11,8 +10,9 @@ import javax.swing.JMenu;
 import javax.swing.JMenuBar;
 import javax.swing.JMenuItem;
 import javax.swing.JPanel;
-import javax.swing.border.EmptyBorder;
+
 import Biblioteka.Biblioteka;
+
 public class GlavniProzor extends JFrame {
 
 	private JPanel contentPane;
@@ -20,18 +20,8 @@ public class GlavniProzor extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-	EventQueue.invokeLater(new Runnable() {
-		public void run() {
-			try {
-				GlavniProzor frame = new GlavniProzor();
-				frame.setVisible(true);
-			} catch (Exception e) {
-				e.printStackTrace();
-			}
-		}
-	});
-}
+
+
 
 	private JMenuBar mainMenu = new JMenuBar();
 	private JMenu osobeMenu = new JMenu("Osobe");
@@ -44,7 +34,7 @@ public class GlavniProzor extends JFrame {
 	private JMenuItem primerakKnjigeItem = new JMenuItem("Primerak Knjige");
 //	private JMenuItem clanarinaItem = new JMenuItem("Tip Clanarine");
 
-	private static Biblioteka biblioteka;
+	private Biblioteka biblioteka;
 
 	private void initMenu() {
 		setJMenuBar(mainMenu);
@@ -59,7 +49,7 @@ public class GlavniProzor extends JFrame {
 	//	knjigeMenu.add(clanarinaItem);
 
 	}
-	public GlavniProzor() {
+	public GlavniProzor(Biblioteka biblioteka) {
 		getContentPane().setBackground(new Color(192, 192, 192));
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);

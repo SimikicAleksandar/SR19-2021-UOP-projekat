@@ -3,6 +3,7 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
@@ -10,9 +11,13 @@ import javax.swing.JLabel;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
+import Osobe.Administrator;
+import Osobe.Bibliotekar;
 
 import java.awt.EventQueue;
 
@@ -34,25 +39,7 @@ public class BibliotekarProzor extends JFrame {
 	private JTextField textField_7;
 	private JTextField textField_8;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					BibliotekarProzor frame = new BibliotekarProzor();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
-	/**
-	 * Create the frame.
-	 */
 	public BibliotekarProzor(Biblioteka biblioteka) {
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
@@ -65,11 +52,38 @@ public class BibliotekarProzor extends JFrame {
 		panel.setBackground(new Color(192, 192, 192));
 		panel.setBounds(0, 0, 684, 511);
 		contentPane.add(panel);
-		panel.setLayout(null);
+		panel.setLayout(null);		
 		
-		table = new JTable();
+		//tabela za bibliotekare 
+		ArrayList<Bibliotekar> aktivniBibliotekari = new ArrayList<Bibliotekar>();
+		for(Bibliotekar bibliotekar:biblioteka.getBibliotekari()) {
+			if(!bibliotekar.isJeObrisan()) {
+				aktivniBibliotekari.add(bibliotekar);
+			}
+		}
+		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "ADRESA", "PLATA"};
+		Object[][] sadrzaj = new Object[aktivniBibliotekari.size()][zaglavlja.length];
+		
+		for(int i=0; i<aktivniBibliotekari.size(); i++) {
+			Bibliotekar bibliotekar = aktivniBibliotekari.get(i);
+			sadrzaj[i][0] = bibliotekar.getIme();
+			sadrzaj[i][1] = bibliotekar.getPrezime();
+			sadrzaj[i][2] = bibliotekar.getPol();
+			sadrzaj[i][3] = bibliotekar.getAdresa();
+			sadrzaj[i][4] = String.valueOf(bibliotekar.getPlata());
+		}
+		
+		DefaultTableModel tabelaBibliotekara = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(tabelaBibliotekara);
 		table.setBounds(10, 11, 350, 489);
 		panel.add(table);
+		
+		table.setRowSelectionAllowed(true);
+		table.setColumnSelectionAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		table.getTableHeader().setReorderingAllowed(false);	
+	/////////////////////////////////////////////////////////////
 		
 		JLabel lblNewLabel = new JLabel("ID:");
 		lblNewLabel.setBounds(370, 36, 100, 14);

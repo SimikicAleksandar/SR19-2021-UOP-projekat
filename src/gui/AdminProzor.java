@@ -1,20 +1,20 @@
 package gui;
 
-import java.awt.BorderLayout;
-import java.awt.EventQueue;
-import java.awt.Window;
+import java.awt.Color;
+import java.util.ArrayList;
 
+import javax.swing.JButton;
 import javax.swing.JFrame;
+import javax.swing.JLabel;
 import javax.swing.JPanel;
+import javax.swing.JTable;
+import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
-
-import java.awt.Color;
-import javax.swing.JTable;
-import javax.swing.JLabel;
-import javax.swing.JTextField;
-import javax.swing.JButton;
+import Osobe.Administrator;
 
 public class AdminProzor extends JFrame {
 
@@ -33,18 +33,7 @@ public class AdminProzor extends JFrame {
 	/**
 	 * Launch the application.
 	 */
-	public static void main(String[] args) {
-		EventQueue.invokeLater(new Runnable() {
-			public void run() {
-				try {
-					AdminProzor frame = new AdminProzor(null);
-					frame.setVisible(true);
-				} catch (Exception e) {
-					e.printStackTrace();
-				}
-			}
-		});
-	}
+	
 
 	/**
 	 * Create the frame.
@@ -63,9 +52,37 @@ public class AdminProzor extends JFrame {
 		contentPane.add(panel);
 		panel.setLayout(null);
 		
-		table = new JTable();
+		//TABELA
+		ArrayList<Administrator> aktivniAdmini = new ArrayList<Administrator>();
+		for(Administrator admin:biblioteka.getAdministratori()) {
+			if(!admin.isJeObrisan()) {
+				aktivniAdmini.add(admin);
+			}
+		}
+		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "ADRESA", "PLATA"};
+		Object[][] sadrzaj = new Object[aktivniAdmini.size()][zaglavlja.length];
+		
+		for(int i=0; i<aktivniAdmini.size(); i++) {
+			Administrator admin = aktivniAdmini.get(i);
+			sadrzaj[i][0] = admin.getIme();
+			sadrzaj[i][1] = admin.getPrezime();
+			sadrzaj[i][2] = admin.getPol();
+			sadrzaj[i][3] = admin.getAdresa();
+			sadrzaj[i][4] = String.valueOf(admin.getPlata());
+		}
+		
+		DefaultTableModel tabelaAdmina = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(tabelaAdmina);
 		table.setBounds(10, 11, 350, 489);
 		panel.add(table);
+		
+		table.setRowSelectionAllowed(true);
+		table.setColumnSelectionAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		table.getTableHeader().setReorderingAllowed(false);	
+		//////////////////////////////////
+		
 		
 		JLabel lblNewLabel = new JLabel("ID:");
 		lblNewLabel.setBounds(370, 36, 100, 14);
