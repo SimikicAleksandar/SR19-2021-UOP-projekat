@@ -7,8 +7,9 @@ public class PrimerakKnjige {
 	private int godinaStampanja;
 	private String jezikStampanja;
 	private boolean daLiJeIznajmljena;
+	private boolean jeObrisan ;
 	public PrimerakKnjige(Knjiga knjiga, int brStrana, TipPoveza tip, int godinaStampanja, String jezikStampanja,
-			boolean daLiJeIznajmljena) {
+			boolean daLiJeIznajmljena, boolean jeObrisan) {
 		super();
 		this.knjiga = knjiga;
 		this.brStrana = brStrana;
@@ -16,8 +17,17 @@ public class PrimerakKnjige {
 		this.godinaStampanja = godinaStampanja;
 		this.jezikStampanja = jezikStampanja;
 		this.daLiJeIznajmljena = daLiJeIznajmljena;
+		this.jeObrisan = jeObrisan;
 	}
 	
+	public boolean isJeObrisan() {
+		return jeObrisan;
+	}
+
+	public void setJeObrisan(boolean jeObrisan) {
+		this.jeObrisan = jeObrisan;
+	}
+
 	public PrimerakKnjige() {
 		
 	}

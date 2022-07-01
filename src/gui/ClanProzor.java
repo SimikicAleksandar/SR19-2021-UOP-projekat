@@ -3,17 +3,22 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
+import Osobe.Administrator;
+import Osobe.ClanBiblioteke;
 
 import javax.swing.JTable;
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
 import javax.swing.JRadioButton;
 import javax.swing.SwingConstants;
 import java.awt.EventQueue;
@@ -78,10 +83,37 @@ public class ClanProzor extends JFrame {
 		JPanel panel = new JPanel();
 		panel.setBounds(10, 11, 360, 489);
 		contentPane.add(panel);
+	/////TABELA
+		ArrayList<ClanBiblioteke> aktivniClanovi = new ArrayList<ClanBiblioteke>();
+		for(ClanBiblioteke clan:biblioteka.getClanovi()) {
+			if(!clan.isJeObrisan()) {
+				aktivniClanovi.add(clan);
+			}
+		}
+		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "BROJ CLANSKE KARTE", "AKTIVNOST"};
+		Object[][] sadrzaj = new Object[aktivniClanovi.size()][zaglavlja.length];
 		
-		table = new JTable();
+		for(int i=0; i<aktivniClanovi.size(); i++) {
+			ClanBiblioteke clan = aktivniClanovi.get(i);
+			sadrzaj[i][0] = clan.getIme();
+			sadrzaj[i][1] = clan.getPrezime();
+			sadrzaj[i][2] = clan.getPol();
+			sadrzaj[i][3] = clan.getBrClanKarte();
+			sadrzaj[i][4] = String.valueOf(clan.isActive());
+		}
+		
+		DefaultTableModel tabelaClanova = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(tabelaClanova);
+		table.setBounds(10, 11, 350, 489);
 		panel.add(table);
 		
+		table.setRowSelectionAllowed(true);
+		table.setColumnSelectionAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		table.getTableHeader().setReorderingAllowed(false);	
+		
+	//////////////////////////////
 		lblNewLabel = new JLabel("ID:");
 		lblNewLabel.setBounds(380, 20, 150, 14);
 		contentPane.add(lblNewLabel);

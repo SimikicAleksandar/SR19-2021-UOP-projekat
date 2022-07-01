@@ -257,7 +257,8 @@ public class Biblioteka {
 				LocalDate datumPoslednjeUplate = LocalDate.parse(lineSplit[8]);
 				int brojMeseciClanarine = Integer.parseInt(lineSplit[9]);
 				boolean isActive = Boolean.parseBoolean(lineSplit[10]);
-				ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tip, datumPoslednjeUplate, brojMeseciClanarine, isActive);
+				boolean jeObrisan = Boolean.parseBoolean(lineSplit[11]);
+				ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tip, datumPoslednjeUplate, brojMeseciClanarine, isActive, jeObrisan);
 				this.clanovi.add(clan);
 			}
 		} catch (IOException e) {
@@ -269,7 +270,7 @@ public class Biblioteka {
 		String sadrzaj = "";
 		for (ClanBiblioteke clan : this.clanovi) {
 			sadrzaj += clan.getId()+ "|"  + clan.getIme()+ "|" + clan.getPrezime() + "|" + clan.getJMBG() + "|" + clan.getAdresa()  + "|" + clan.getPol()  + "|" + clan.getBrClanKarte() + 
-					"|" + clan.getTipclanarine() + "|" +clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "\n";
+					"|" + clan.getTipclanarine() + "|" +clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "|" + clan.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/clanovi.txt");
@@ -291,8 +292,8 @@ public class Biblioteka {
 				String[] lineSplit = line.split("\\|");
 				String oznaka = lineSplit[0];
 				String opisZanra = lineSplit[1];
-				
-				ZanrKnjige zanr = new ZanrKnjige(oznaka, opisZanra);
+				boolean jeObrisan = Boolean.parseBoolean(lineSplit[2]);
+				ZanrKnjige zanr = new ZanrKnjige(oznaka, opisZanra, jeObrisan);
 				this.zanrovi.add(zanr);
 			}
 		} catch (IOException e) {
@@ -303,7 +304,7 @@ public class Biblioteka {
 	public void snimiZanr() {
 		String sadrzaj = "";
 		for (ZanrKnjige zanr : this.zanrovi) {
-			sadrzaj += zanr.getOznaka() + "|"  + zanr.getOpisZanra()  + "\n";
+			sadrzaj += zanr.getOznaka() + "|"  + zanr.getOpisZanra()  + "|" + zanr.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/zanrovi.txt");
@@ -339,8 +340,9 @@ public class Biblioteka {
 				int godinaObjavljivanja = Integer.parseInt(lineSplit[4]);
 				String jezikOriginala = lineSplit[5];
 				String opis = lineSplit[6];
-				ZanrKnjige zanr = this.nadjiZanr(lineSplit[7]) ;
-				Knjiga knjiga = new Knjiga(id, naslovKnjige, originalNaslovKnjige, pisac, godinaObjavljivanja, jezikOriginala, opis, zanr);
+				ZanrKnjige zanr = this.nadjiZanr(lineSplit[7]);
+				boolean jeObrisan = Boolean.parseBoolean(lineSplit[8]);
+				Knjiga knjiga = new Knjiga(id, naslovKnjige, originalNaslovKnjige, pisac, godinaObjavljivanja, jezikOriginala, opis, zanr, jeObrisan);
 				this.knjige.add(knjiga);
 			}
 		} catch (IOException e) {
@@ -352,7 +354,7 @@ public class Biblioteka {
 		String sadrzaj = "";
 		for (Knjiga knjiga : this.knjige) {
 			sadrzaj += knjiga.getId()+ "|"  + knjiga.getNaslovKnjige() + "|" + knjiga.getOriginalNaslovKnjige() + "|" + knjiga.getPisac()+ "|" + knjiga.getGodinaObjavljivanja()  + "|" + knjiga.getJezikOriginala() + "|" + knjiga.getOpis() + 
-					"|" + knjiga.getZanr().getOznaka() +"\n";
+					"|" + knjiga.getZanr().getOznaka() + "|" + knjiga.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/knjiga.txt");
@@ -375,6 +377,8 @@ public class Biblioteka {
         }
         return trazeni;
         }
+	
+	
 	public void ucitajPrimerakKnjige() {
 		try {
 			File korisniciFile = new File("src/fajlovi/primerakKnjige.txt");
@@ -389,15 +393,30 @@ public class Biblioteka {
 				int godinaStampanja = Integer.parseInt(lineSplit[3]);
 				String jezikStampanja = lineSplit[4];
 				boolean daLiJeIznajmljena = Boolean.parseBoolean(lineSplit[5]);
-				PrimerakKnjige primerak = new PrimerakKnjige(knjiga, brojStrana, tipPoveza,godinaStampanja,jezikStampanja, daLiJeIznajmljena );
+				boolean jeObrisan = Boolean.parseBoolean(lineSplit[6]);
+				PrimerakKnjige primerak = new PrimerakKnjige(knjiga, brojStrana, tipPoveza,godinaStampanja,jezikStampanja, daLiJeIznajmljena, jeObrisan);
 				this.primerciKnjiga.add(primerak);
 			}
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
 		}
 	}
-	
-	
+//	 int godinaStampanja, String jezikStampanja,
+//		boolean daLiJeIznajmljena, boolean jeObrisan) {
+	public void snimiPrimerakKnjige() {
+		String sadrzaj = "";
+		for (PrimerakKnjige primerak : this.primerciKnjiga) {
+			sadrzaj += primerak.getKnjiga() + "|"  + primerak.getBrStrana()  + "|" + primerak.getTip() + primerak.getGodinaStampanja() + "|" + primerak.getJezikStampanja() + "|" + primerak.isDaLiJeIznajmljena() + "|" + primerak.isJeObrisan() + "\n";
+		}
+		try {
+			File korisniciFile = new File("src/fajlovi/zanrovi.txt");
+			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
+			writer.write(sadrzaj);
+			writer.close();
+		}catch(IOException e){
+			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+		}
+	}
 	
 	
 }

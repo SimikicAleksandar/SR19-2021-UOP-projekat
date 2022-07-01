@@ -9,19 +9,22 @@ public class ClanBiblioteke extends Osoba{
 	private LocalDate datumPoslednjeUplate ;
 	private int brojMeseciClanarine;
 	private boolean isActive ;
+	private boolean jeObrisan;
 	
 	public ClanBiblioteke() {
 		super();
 	}
 
 	public ClanBiblioteke(int id, String ime, String prezime, String jMBG, String adresa, Pol pol, String brClanKarte,
-			TipClanarine tipclanarine, LocalDate datumPoslednjeUplate, int brojMeseciClanarine, boolean isActive) {
+			TipClanarine tipclanarine, LocalDate datumPoslednjeUplate, int brojMeseciClanarine, boolean isActive, boolean jeObrisan) {
 		super(id, ime, prezime, jMBG, adresa, pol);
 		this.brClanKarte = brClanKarte;
 		this.tipclanarine = tipclanarine;
 		this.datumPoslednjeUplate = datumPoslednjeUplate;
 		this.brojMeseciClanarine = brojMeseciClanarine;
 		this.isActive = isActive;
+		this.setJeObrisan(jeObrisan);
+		
 	}
 
 	public String getBrClanKarte() {
@@ -62,6 +65,14 @@ public class ClanBiblioteke extends Osoba{
 
 	public void setActive(boolean isActive) {
 		this.isActive = isActive;
+	}
+
+	public boolean isJeObrisan() {
+		return jeObrisan;
+	}
+
+	public void setJeObrisan(boolean jeObrisan) {
+		this.jeObrisan = jeObrisan;
 	}
 
 	

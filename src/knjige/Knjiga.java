@@ -9,13 +9,13 @@ public class Knjiga{
 	private String jezikOriginala ; 
 	private String opis ;
 	private ZanrKnjige zanr;
-	
+	private boolean jeObrisan;
 	public Knjiga() {
 		super();
 	}
 
 	public Knjiga(int id, String naslovKnjige, String originalNaslovKnjige, String pisac, int godinaObjavljivanja,
-			String jezikOriginala, String opis, ZanrKnjige zanr) {
+			String jezikOriginala, String opis, ZanrKnjige zanr, boolean jeObrisan) {
 		super();
 		this.id = id;
 		this.naslovKnjige = naslovKnjige;
@@ -25,6 +25,15 @@ public class Knjiga{
 		this.jezikOriginala = jezikOriginala;
 		this.opis = opis;
 		this.zanr = zanr;
+		this.jeObrisan = jeObrisan;
+	}
+
+	public boolean isJeObrisan() {
+		return jeObrisan;
+	}
+
+	public void setJeObrisan(boolean jeObrisan) {
+		this.jeObrisan = jeObrisan;
 	}
 
 	public int getId() {

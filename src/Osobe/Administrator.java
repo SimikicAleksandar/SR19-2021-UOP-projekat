@@ -6,7 +6,7 @@ public class Administrator extends Zaposleni {
 	public Administrator(int id, String ime, String prezime, String jMBG, String adresa, Pol pol, String korisnickoIme,
 			String korisnickaSifra, double plata, boolean jeObrisan) {
 		super(id, ime, prezime, jMBG, adresa, pol, korisnickoIme, korisnickaSifra, plata);
-		this.jeObrisan = jeObrisan ;
+		this.jeObrisan = jeObrisan;
 	}
 	
 	public Bibliotekar registrujZaposlenog(int id, String ime, String prezime, String jMBG, String adresa, Pol pol, String korisnickoIme,

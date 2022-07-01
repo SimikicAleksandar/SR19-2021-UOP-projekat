@@ -44,8 +44,8 @@ public abstract class Zaposleni extends Osoba{
 	}
 	
 	public ClanBiblioteke dodajClana(int id, String ime, String prezime, String jMBG, String adresa, Pol pol, String brClanKarte,
-			TipClanarine tipclanarine, LocalDate datumPoslednjeUplate, int brojMeseciClanarine, boolean isActive) {
-		ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tipclanarine, datumPoslednjeUplate, brojMeseciClanarine, isActive);
+			TipClanarine tipclanarine, LocalDate datumPoslednjeUplate, int brojMeseciClanarine, boolean isActive, boolean jeObrisan) {
+		ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tipclanarine, datumPoslednjeUplate, brojMeseciClanarine, isActive, jeObrisan);
 		return clan;
 	}
 	

@@ -1,11 +1,15 @@
 package Biblioteka;
 
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import Osobe.Administrator;
 import Osobe.Bibliotekar;
+import Osobe.ClanBiblioteke;
 import Osobe.Pol;
+import Osobe.TipClanarine;
 import gui.GlavniProzor;
+import knjige.ZanrKnjige;
 
 public class BibliotekaMain {
 
@@ -35,12 +39,41 @@ public class BibliotekaMain {
 		ArrayList<Bibliotekar> bibliotekari = new ArrayList<Bibliotekar>();
 		bibliotekari.add(bibliotekar);
 		biblioteka.setBibliotekari(bibliotekari);
-		biblioteka.snimiBibliotekari();    
+		biblioteka.snimiBibliotekari();
+		
+		biblioteka.ucitajClanove();
+		for(ClanBiblioteke clan : biblioteka.getClanovi()) {
+			System.out.println(clan.getPrezime());
 		}
-			
+		
+		TipClanarine tip = new TipClanarine(1234566,"MATOIAHN", 1234.0); 
+		ClanBiblioteke clan = new ClanBiblioteke(200, "ALEKSANDAR", "DOKTORIRAOJAVU", "12313212312312", "BULEVAR JAVE", Pol.valueOf("MUSKI"), "RADI", tip, LocalDate.of(2022, 2, 23) ,11,true,false);
+		ArrayList<ClanBiblioteke> clanovi = new ArrayList<ClanBiblioteke>();
+		clanovi.add(clan);
+		biblioteka.setClanovi(clanovi);
+		biblioteka.snimiClanove();
+	
+		biblioteka.ucitajZanr();
+		
+		for(ZanrKnjige Zanr : biblioteka.getZanrovi()) {
+			System.out.println(Zanr.getOznaka());
+		
+	
+	}
+	ZanrKnjige zanr = new ZanrKnjige("123", "OVO JE OPIS ZANRA BLA BLA", false);
+	ArrayList<ZanrKnjige> zanrovi = new ArrayList<ZanrKnjige>();
+	zanrovi.add(zanr);
+	biblioteka.setZanrovi(zanrovi);
+	biblioteka.snimiZanr();
+}
+	//biblioteka.setAdministratori(administratori);
+	//biblioteka.snimiAdministratore();
+//	GlavniProzor lp = new GlavniProzor(biblioteka);
+//        lp.setVisible(true);
+//			
 	/*
 	public static void main(String[] args) {
-		Biblioteka biblioteka = new Biblioteka();
+		
 		biblioteka.ucitajBibliotekare();
 		for(Bibliotekar bibliotekar : biblioteka.getBibliotekari()) {
 			System.out.println(bibliotekar.getKorisnickoIme());
@@ -56,7 +89,7 @@ public class BibliotekaMain {
 	/*
 	public static void main(String[] args) {
 		
-		Biblioteka biblioteka = new Biblioteka();
+		
 		ArrayList<Knjiga> knjige = new ArrayList<Knjiga>();
 		biblioteka.setKnjige(knjige);
 		biblioteka.ucitajKnjige();
@@ -65,7 +98,7 @@ public class BibliotekaMain {
 		}
 	} */
 //	public static void main(String[] args) {
-//		Biblioteka biblioteka = new Biblioteka();
+//		
 //		biblioteka.ucitajClanove();
 //		for(ClanBiblioteke clan : biblioteka.getClanovi()) {
 //			System.out.println(clan.getPrezime());
