@@ -3,17 +3,25 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.border.EmptyBorder;
+import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
+import knjige.Knjiga;
+import knjige.ZanrKnjige;
 
 import javax.swing.JLabel;
 import javax.swing.JTextField;
+import javax.swing.ListSelectionModel;
+
 import java.awt.EventQueue;
 
 import javax.swing.JFrame;
@@ -41,27 +49,9 @@ public class KnjigaProzor extends JFrame {
 	private JTextField textField_6;
 	private JTextField textField_7;
 
-	/**
-	 * Launch the application.
-	 */
-//	public static void main(String[] args) {
-//		EventQueue.invokeLater(new Runnable() {
-//			public void run() {
-//				try {
-//					KnjigaProzor frame = new KnjigaProzor();
-//					frame.setVisible(true);
-//				} catch (Exception e) {
-//					e.printStackTrace();
-//				}
-//			}
-//		});
-//	}
 
-	/**
-	 * Create the frame.
-	 */
 	public KnjigaProzor(Biblioteka biblioteka) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));
@@ -73,8 +63,37 @@ public class KnjigaProzor extends JFrame {
 		contentPane.setBackground(new Color(192, 192, 192));
 		contentPane.add(panel);
 		
-		table = new JTable();
+		biblioteka.ucitajKnjige();
+		ArrayList<Knjiga> aktivneKnjige = new ArrayList<Knjiga>();
+		for(Knjiga knjiga:biblioteka.getKnjige()) {
+			if(!knjiga.isJeObrisan()) {
+				aktivneKnjige.add(knjiga);
+			}
+		}
+		String[] zaglavlja = new String[] {"ID", "NASLOV KNJIGE", "PISAC"};
+		Object[][] sadrzaj = new Object[aktivneKnjige.size()+1][zaglavlja.length];
+		
+		sadrzaj[0][0] = zaglavlja[0];
+		sadrzaj[0][1] = zaglavlja[1];
+		sadrzaj[0][2] = zaglavlja[2];
+		for(int i=0; i<aktivneKnjige.size(); i++) {
+			Knjiga knjiga = aktivneKnjige.get(i);
+			sadrzaj[i+1][0] = knjiga.getId();
+			sadrzaj[i+1][1] = knjiga.getNaslovKnjige();
+			sadrzaj[i+1][2] = knjiga.getPisac();
+			}
+		
+		DefaultTableModel tabelaZanrova = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(tabelaZanrova);
+		table.setBounds(10, 11, 320, 239);
 		panel.add(table);
+		
+		table.setRowSelectionAllowed(true);
+		table.setColumnSelectionAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		table.getTableHeader().setReorderingAllowed(false);	
+			
 		
 		lblNewLabel = new JLabel("ID:");
 		lblNewLabel.setBounds(380, 31, 130, 14);
@@ -155,6 +174,11 @@ public class KnjigaProzor extends JFrame {
 		JButton btnNewButton_1 = new JButton("AZURIRAJ");
 		btnNewButton_1.setBounds(434, 349, 182, 52);
 		contentPane.add(btnNewButton_1);
+		btnNewButton_1.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e){
+				System.out.println(aktivneKnjige.get(table.getSelectedRow()-1).getId());
+			}
+		});
 		
 		JButton btnNewButton_2 = new JButton("DODAJ");
 		btnNewButton_2.setBounds(434, 286, 182, 52);

@@ -26,8 +26,7 @@ public class BibliotekaMain {
 		administratori.add(administrator);
 		biblioteka.setAdministratori(administratori);
 		biblioteka.snimiAdministratore();
-		GlavniProzor lp = new GlavniProzor(biblioteka);
-	        lp.setVisible(true);
+		
 	        
 	        
 		biblioteka.ucitajBibliotekare();
@@ -51,8 +50,7 @@ public class BibliotekaMain {
 		ArrayList<ClanBiblioteke> clanovi = new ArrayList<ClanBiblioteke>();
 		clanovi.add(clan);
 		biblioteka.setClanovi(clanovi);
-		biblioteka.snimiClanove();
-	
+		biblioteka.snimiClanove();	
 		biblioteka.ucitajZanr();
 		
 		for(ZanrKnjige Zanr : biblioteka.getZanrovi()) {
@@ -65,6 +63,9 @@ public class BibliotekaMain {
 	zanrovi.add(zanr);
 	biblioteka.setZanrovi(zanrovi);
 	biblioteka.snimiZanr();
+	
+	GlavniProzor lp = new GlavniProzor(biblioteka);
+    lp.setVisible(true);
 }
 	//biblioteka.setAdministratori(administratori);
 	//biblioteka.snimiAdministratore();

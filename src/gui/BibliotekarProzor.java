@@ -41,7 +41,7 @@ public class BibliotekarProzor extends JFrame {
 
 
 	public BibliotekarProzor(Biblioteka biblioteka) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

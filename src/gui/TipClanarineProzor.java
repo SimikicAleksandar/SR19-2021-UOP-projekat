@@ -31,13 +31,14 @@ public class TipClanarineProzor extends JFrame {
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
 	
-	/**
-	 * Launch the application.
-	 */
+	
 	public static void main(String[] args) {
+
+		
 		EventQueue.invokeLater(new Runnable() {
 			public void run() {
 				try {
+					
 					TipClanarineProzor frame = new TipClanarineProzor();
 					frame.setVisible(true);
 				} catch (Exception e) {
@@ -51,7 +52,7 @@ public class TipClanarineProzor extends JFrame {
 	 * Create the frame.
 	 */
 	public TipClanarineProzor() {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 300);
 		contentPane = new JPanel();
 		contentPane.setBorder(new EmptyBorder(5, 5, 5, 5));

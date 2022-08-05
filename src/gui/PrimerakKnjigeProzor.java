@@ -47,7 +47,7 @@ public class PrimerakKnjigeProzor extends JFrame {
 
 
 	public PrimerakKnjigeProzor(Biblioteka biblioteka) {
-		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
 		contentPane = new JPanel();
 		getContentPane().setBackground(new Color(192,192,192));

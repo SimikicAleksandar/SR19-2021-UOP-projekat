@@ -270,7 +270,7 @@ public class Biblioteka {
 		String sadrzaj = "";
 		for (ClanBiblioteke clan : this.clanovi) {
 			sadrzaj += clan.getId()+ "|"  + clan.getIme()+ "|" + clan.getPrezime() + "|" + clan.getJMBG() + "|" + clan.getAdresa()  + "|" + clan.getPol()  + "|" + clan.getBrClanKarte() + 
-					"|" + clan.getTipclanarine() + "|" +clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "|" + clan.isJeObrisan() +"\n";
+					"|" + clan.getTipclanarine().getId() + "|" +clan.getDatumPoslednjeUplate()  + "|" + clan.getBrojMeseciClanarine() + "|" + clan.isActive() + "|" + clan.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/clanovi.txt");
@@ -294,7 +294,16 @@ public class Biblioteka {
 				String opisZanra = lineSplit[1];
 				boolean jeObrisan = Boolean.parseBoolean(lineSplit[2]);
 				ZanrKnjige zanr = new ZanrKnjige(oznaka, opisZanra, jeObrisan);
+				boolean duplikat = false ;
+				for(ZanrKnjige zanrKnjige : this.zanrovi) {
+					if(zanrKnjige.getOznaka().equals(oznaka)) {
+						duplikat = true ;
+						break;
+					}
+				}
+				if(!duplikat) {
 				this.zanrovi.add(zanr);
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
