@@ -59,12 +59,14 @@ public class ZanroviProzro extends JFrame {
 			}
 		}
 		String[] zaglavlja = new String[] {"OZNAKA", "OPIS ZANRA"};
-		Object[][] sadrzaj = new Object[aktivniZanrovi.size()][zaglavlja.length];
+		Object[][] sadrzaj = new Object[aktivniZanrovi.size()+1][zaglavlja.length];
+		sadrzaj[0][0] = zaglavlja[0];
+		sadrzaj[0][1] = zaglavlja[1];
 		
 		for(int i=0; i<aktivniZanrovi.size(); i++) {
 			ZanrKnjige zanr = aktivniZanrovi.get(i);
-			sadrzaj[i][0] = zanr.getOznaka();
-			sadrzaj[i][1] = zanr.getOpisZanra();
+			sadrzaj[i+1][0] = zanr.getOznaka();
+			sadrzaj[i+1][1] = zanr.getOpisZanra();
 			}
 		
 		DefaultTableModel tabelaZanrova = new DefaultTableModel(sadrzaj, zaglavlja);

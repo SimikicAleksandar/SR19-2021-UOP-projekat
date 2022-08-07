@@ -73,20 +73,26 @@ public class ClanProzor extends JFrame {
 			}
 		}
 		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "BROJ CLANSKE KARTE", "AKTIVNOST"};
-		Object[][] sadrzaj = new Object[aktivniClanovi.size()][zaglavlja.length];
+		Object[][] sadrzaj = new Object[aktivniClanovi.size()+1][zaglavlja.length];
 		
+		sadrzaj[0][0] = zaglavlja[0];
+		sadrzaj[0][1] = zaglavlja[1];
+		sadrzaj[0][2] = zaglavlja[2];
+		sadrzaj[0][3] = zaglavlja[3];
+		sadrzaj[0][4] = zaglavlja[4];
 		for(int i=0; i<aktivniClanovi.size(); i++) {
 			ClanBiblioteke clan = aktivniClanovi.get(i);
-			sadrzaj[i][0] = clan.getIme();
-			sadrzaj[i][1] = clan.getPrezime();
-			sadrzaj[i][2] = clan.getPol();
-			sadrzaj[i][3] = clan.getBrClanKarte();
-			sadrzaj[i][4] = String.valueOf(clan.isActive());
+			sadrzaj[i+1][0] = clan.getIme();
+			sadrzaj[i+1][1] = clan.getPrezime();
+			sadrzaj[i+1][2] = clan.getPol();
+			sadrzaj[i+1][3] = clan.getBrClanKarte();
+			sadrzaj[i+1][4] = String.valueOf(clan.isActive());
 		}
 		
 		DefaultTableModel tabelaClanova = new DefaultTableModel(sadrzaj, zaglavlja);
 		table = new JTable(tabelaClanova);
 		table.setBounds(10, 11, 350, 489);
+		table.getColumnModel().getColumn(0).setPreferredWidth(59);
 		panel.add(table);
 		
 		table.setRowSelectionAllowed(true);

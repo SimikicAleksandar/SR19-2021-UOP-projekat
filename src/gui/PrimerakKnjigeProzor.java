@@ -13,6 +13,7 @@ import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
 import Osobe.Administrator;
+import knjige.Knjiga;
 import knjige.PrimerakKnjige;
 
 import javax.swing.JTable;
@@ -56,33 +57,47 @@ public class PrimerakKnjigeProzor extends JFrame {
 		contentPane.setLayout(null);
 		
 		//TABELA
-				ArrayList<PrimerakKnjige> aktivniPrimerci = new ArrayList<PrimerakKnjige>();
-				for(PrimerakKnjige primerakKnjige:biblioteka.getPrimerciKnjiga()) {
-					if(!primerakKnjige.isJeObrisan()) {
-						aktivniPrimerci.add(primerakKnjige);
-					}
-				}
-				String[] zaglavlja = new String[] {"BROJ STRANA", "TIP POVEZA", "GODINA STAMPANJA", "JEZIK STAMPANJA"};
-				Object[][] sadrzaj = new Object[aktivniPrimerci.size()][zaglavlja.length];
-				
-				for(int i=0; i<aktivniPrimerci.size(); i++) {
-					PrimerakKnjige primerak = aktivniPrimerci.get(i);
-					sadrzaj[i][0] = primerak.getBrStrana();
-					sadrzaj[i][1] = primerak.getTip();
-					sadrzaj[i][2] = primerak.getGodinaStampanja();
-					sadrzaj[i][3] = primerak.getJezikStampanja();
-				}
-				
-				DefaultTableModel tabelaPrimeraka = new DefaultTableModel(sadrzaj, zaglavlja);
-				table = new JTable(tabelaPrimeraka);
-				table.setBounds(10, 11, 360, 489);
-				contentPane.add(table);
-				
-				table.setRowSelectionAllowed(true);
-				table.setColumnSelectionAllowed(false);
-				table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
-				table.setDefaultEditor(Object.class, null);
-				table.getTableHeader().setReorderingAllowed(false);	
+
+		JPanel panel = new JPanel();
+		panel.setBounds(10, 11, 360, 489);
+		contentPane.setBackground(new Color(192, 192, 192));
+		contentPane.add(panel);
+		
+		biblioteka.ucitajKnjige();
+		ArrayList<PrimerakKnjige> aktivniPrimerci = new ArrayList<PrimerakKnjige>();
+		for(PrimerakKnjige primerak:biblioteka.getPrimerciKnjiga()) {
+			if(!primerak.isJeObrisan()) {
+				aktivniPrimerci.add(primerak);
+			}
+		}
+		String[] zaglavlja = new String[] {"KNJIGA", "BR STRANA", "TIP POVEZA", "GODINA","JEZIK"};
+		Object[][] sadrzaj = new Object[aktivniPrimerci.size()+1][zaglavlja.length];
+		
+		sadrzaj[0][0] = zaglavlja[0];
+		sadrzaj[0][1] = zaglavlja[1];
+		sadrzaj[0][2] = zaglavlja[2];
+		sadrzaj[0][3] = zaglavlja[3];
+		sadrzaj[0][4] = zaglavlja[4];
+		for(int i=0; i<aktivniPrimerci.size(); i++) {
+			PrimerakKnjige primerak = aktivniPrimerci.get(i);
+			//sadrzaj[i+1][0] = primerak.get;
+			sadrzaj[i+1][1] = primerak.getBrStrana();
+			sadrzaj[i+1][2] = primerak.getTip();
+			sadrzaj[i+1][3] = primerak.getGodinaStampanja();
+			sadrzaj[i+1][4] = primerak.getJezikStampanja();
+		}
+		
+		DefaultTableModel tabelaZanrova = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(tabelaZanrova);
+		table.setBounds(10, 11, 320, 239);
+		table.getColumnModel().getColumn(0).setPreferredWidth(60);
+		panel.add(table);
+		
+		table.setRowSelectionAllowed(true);
+		table.setColumnSelectionAllowed(false);
+		table.setSelectionMode(ListSelectionModel.SINGLE_SELECTION);
+		table.setDefaultEditor(Object.class, null);
+		table.getTableHeader().setReorderingAllowed(false);		
 				//////////////////////////////////
 				
 				

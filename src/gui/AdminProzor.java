@@ -60,15 +60,20 @@ public class AdminProzor extends JFrame {
 			}
 		}
 		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "ADRESA", "PLATA"};
-		Object[][] sadrzaj = new Object[aktivniAdmini.size()][zaglavlja.length];
+		Object[][] sadrzaj = new Object[aktivniAdmini.size()+1][zaglavlja.length];
 		
+		sadrzaj[0][0] = zaglavlja[0];
+		sadrzaj[0][1] = zaglavlja[1];
+		sadrzaj[0][2] = zaglavlja[2];
+		sadrzaj[0][3] = zaglavlja[3];
+		sadrzaj[0][4] = zaglavlja[4];
 		for(int i=0; i<aktivniAdmini.size(); i++) {
 			Administrator admin = aktivniAdmini.get(i);
-			sadrzaj[i][0] = admin.getIme();
-			sadrzaj[i][1] = admin.getPrezime();
-			sadrzaj[i][2] = admin.getPol();
-			sadrzaj[i][3] = admin.getAdresa();
-			sadrzaj[i][4] = String.valueOf(admin.getPlata());
+			sadrzaj[i+1][0] = admin.getIme();
+			sadrzaj[i+1][1] = admin.getPrezime();
+			sadrzaj[i+1][2] = admin.getPol();
+			sadrzaj[i+1][3] = admin.getAdresa();
+			sadrzaj[i+1][4] = String.valueOf(admin.getPlata());
 		}
 		
 		DefaultTableModel tabelaAdmina = new DefaultTableModel(sadrzaj, zaglavlja);

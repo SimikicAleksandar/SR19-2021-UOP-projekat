@@ -1,4 +1,4 @@
-package Biblioteka;
+ package Biblioteka;
 
 import java.io.BufferedReader;
 import java.io.BufferedWriter;
@@ -352,7 +352,16 @@ public class Biblioteka {
 				ZanrKnjige zanr = this.nadjiZanr(lineSplit[7]);
 				boolean jeObrisan = Boolean.parseBoolean(lineSplit[8]);
 				Knjiga knjiga = new Knjiga(id, naslovKnjige, originalNaslovKnjige, pisac, godinaObjavljivanja, jezikOriginala, opis, zanr, jeObrisan);
+				boolean duplikat = false ;
+				for(Knjiga knjigaa : this.knjige) {
+					if(knjiga.getId() == id) {
+						duplikat = true ;
+						break;
+					}
+				}
+				if(!duplikat) {
 				this.knjige.add(knjiga);
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
@@ -410,8 +419,7 @@ public class Biblioteka {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
 		}
 	}
-//	 int godinaStampanja, String jezikStampanja,
-//		boolean daLiJeIznajmljena, boolean jeObrisan) {
+
 	public void snimiPrimerakKnjige() {
 		String sadrzaj = "";
 		for (PrimerakKnjige primerak : this.primerciKnjiga) {

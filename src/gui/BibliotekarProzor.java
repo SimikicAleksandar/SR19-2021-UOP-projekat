@@ -62,15 +62,20 @@ public class BibliotekarProzor extends JFrame {
 			}
 		}
 		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "ADRESA", "PLATA"};
-		Object[][] sadrzaj = new Object[aktivniBibliotekari.size()][zaglavlja.length];
+		Object[][] sadrzaj = new Object[aktivniBibliotekari.size()+1][zaglavlja.length];
 		
+		sadrzaj[0][0] = zaglavlja[0];
+		sadrzaj[0][1] = zaglavlja[1];
+		sadrzaj[0][2] = zaglavlja[2];
+		sadrzaj[0][3] = zaglavlja[3];
+		sadrzaj[0][4] = zaglavlja[4];
 		for(int i=0; i<aktivniBibliotekari.size(); i++) {
 			Bibliotekar bibliotekar = aktivniBibliotekari.get(i);
-			sadrzaj[i][0] = bibliotekar.getIme();
-			sadrzaj[i][1] = bibliotekar.getPrezime();
-			sadrzaj[i][2] = bibliotekar.getPol();
-			sadrzaj[i][3] = bibliotekar.getAdresa();
-			sadrzaj[i][4] = String.valueOf(bibliotekar.getPlata());
+			sadrzaj[i+1][0] = bibliotekar.getIme();
+			sadrzaj[i+1][1] = bibliotekar.getPrezime();
+			sadrzaj[i+1][2] = bibliotekar.getPol();
+			sadrzaj[i+1][3] = bibliotekar.getAdresa();
+			sadrzaj[i+1][4] = String.valueOf(bibliotekar.getPlata());
 		}
 		
 		DefaultTableModel tabelaBibliotekara = new DefaultTableModel(sadrzaj, zaglavlja);

@@ -70,22 +70,27 @@ public class KnjigaProzor extends JFrame {
 				aktivneKnjige.add(knjiga);
 			}
 		}
-		String[] zaglavlja = new String[] {"ID", "NASLOV KNJIGE", "PISAC"};
+		String[] zaglavlja = new String[] {"ID", "NASLOV", "PISAC", "JEZIK", "OPIS"};
 		Object[][] sadrzaj = new Object[aktivneKnjige.size()+1][zaglavlja.length];
 		
 		sadrzaj[0][0] = zaglavlja[0];
 		sadrzaj[0][1] = zaglavlja[1];
 		sadrzaj[0][2] = zaglavlja[2];
+		sadrzaj[0][3] = zaglavlja[3];
+		sadrzaj[0][4] = zaglavlja[4];
 		for(int i=0; i<aktivneKnjige.size(); i++) {
 			Knjiga knjiga = aktivneKnjige.get(i);
 			sadrzaj[i+1][0] = knjiga.getId();
 			sadrzaj[i+1][1] = knjiga.getNaslovKnjige();
 			sadrzaj[i+1][2] = knjiga.getPisac();
-			}
+			sadrzaj[i+1][3] = knjiga.getJezikOriginala();
+			sadrzaj[i+1][4] = knjiga.getOpis();
+		}
 		
-		DefaultTableModel tabelaZanrova = new DefaultTableModel(sadrzaj, zaglavlja);
-		table = new JTable(tabelaZanrova);
+		DefaultTableModel tabelaKnjiga = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(tabelaKnjiga);
 		table.setBounds(10, 11, 320, 239);
+		table.getColumnModel().getColumn(0).setPreferredWidth(60);
 		panel.add(table);
 		
 		table.setRowSelectionAllowed(true);
