@@ -78,9 +78,10 @@ public class PrimerakKnjigeProzor extends JFrame {
 		sadrzaj[0][2] = zaglavlja[2];
 		sadrzaj[0][3] = zaglavlja[3];
 		sadrzaj[0][4] = zaglavlja[4];
-		for(int i=0; i<aktivniPrimerci.size(); i++) {
+		for(int i=0; i<aktivniPrimerci.size(); i++) {			
 			PrimerakKnjige primerak = aktivniPrimerci.get(i);
-			//sadrzaj[i+1][0] = primerak.get;
+			
+			sadrzaj[i+1][0] = primerak.getKnjiga().getId();	
 			sadrzaj[i+1][1] = primerak.getBrStrana();
 			sadrzaj[i+1][2] = primerak.getTip();
 			sadrzaj[i+1][3] = primerak.getGodinaStampanja();

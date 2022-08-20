@@ -1,11 +1,14 @@
 package gui;
 
 import java.awt.Color;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
 import javax.swing.JFrame;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JPanel;
 import javax.swing.JTable;
 import javax.swing.JTextField;
@@ -15,29 +18,128 @@ import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
 import Osobe.Administrator;
+import Osobe.Pol;
 
 public class AdminProzor extends JFrame {
 
 	private JPanel contentPane;
 	private JTable table;
-	private JTextField textField;
-	private JTextField textField_1;
-	private JTextField textField_2;
-	private JTextField textField_3;
-	private JTextField textField_4;
-	private JTextField textField_5;
-	private JTextField textField_6;
-	private JTextField textField_7;
-	private JTextField textField_8;
-
-	/**
-	 * Launch the application.
-	 */
+	private DefaultTableModel model;
+	private JTextField textField; // ---> id
+	private JTextField textField_1; // ---> ime
+	private JTextField textField_2; // ---> prezime
+	private JTextField textField_3; // ---> jmbg
+	private JTextField textField_4; // ---> adresa
+	private JTextField textField_5; // ---> pol
+	private JTextField textField_6; // ---> kime
+	private JTextField textField_7; // ---> ksifra
+	private JTextField textField_8; // ---> plata
 	
+	private Biblioteka biblioteka;
+	/* CREATE */
+	public static boolean validacijaBroja(String str) { 
+        try { 
+                Integer.parseInt(str); 
+                return true; 
+        } catch (NumberFormatException e) { 
+                JOptionPane.showMessageDialog(null, "ID mora biti broj", "Error", JOptionPane.WARNING_MESSAGE); 
+                return false; 
+        } 
+}
+	private void addRow() {
+		try {
+			boolean error = false;
+			int id = Integer.parseInt(textField.getText());
+			boolean obrisan = false;
+			double plata = Double.parseDouble(textField_8.getText());
 
-	/**
-	 * Create the frame.
-	 */
+
+			Pol polovi = Pol.valueOf(textField_5.getText());
+			if (validacijaBroja(textField.getText()) == true) {
+				Administrator updated = new Administrator(id, textField.getText(), textField_2.getText(),
+						textField_3.getText(), textField_4.getText(), polovi, textField_6.getText(),
+						textField_7.getText(), plata, obrisan);
+				String[] zaglavlja = new String[] {"ID", "IME", "PREZIME","JMBG", "ADRESA", "POL","KORISNICKO IME","KORISNICKA SIFRA", "PLATA"};
+
+				
+				Object[][] sadrzaj1 = new Object[biblioteka.getAdministratori().size()][zaglavlja.length];
+				Object[] sadrzaj = new Object[zaglavlja.length];
+
+				for (int x = 0; x < biblioteka.getAdministratori().size(); x++) {
+					Administrator admin = biblioteka.getAdministratori().get(x);
+					sadrzaj1[x][0] = admin.getId();
+					if (updated.getId() == admin.getId()) {
+						JOptionPane.showMessageDialog(null, "Entitet sa istim id-om vec postoji", "Greska",
+								JOptionPane.WARNING_MESSAGE);
+						error = true;
+						break;
+					}
+
+				}
+				if (error != true) {
+					biblioteka.addAdmin(updated);
+					biblioteka.snimiAdministratore();
+					
+					sadrzaj[0] = updated.getId();
+					sadrzaj[1] = updated.getIme();
+					sadrzaj[2] = updated.getPrezime();
+					sadrzaj[3] = updated.getJMBG();
+					sadrzaj[4] = updated.getAdresa();
+					sadrzaj[5] = updated.getPol();
+					sadrzaj[6] = updated.getKorisnickoIme();
+					sadrzaj[7] = updated.getKorisnickaSifra();
+					sadrzaj[8] = updated.getPlata();
+					
+					biblioteka.snimiAdministratore();
+					model.addRow(sadrzaj);
+					table.setModel(model);
+
+				}
+			}
+		}
+		 catch (NumberFormatException x) {
+			JOptionPane.showMessageDialog(null, "Uneli ste slovo u input polje za broj", "Greska",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		
+	}
+	
+	
+/* DELETE */
+	
+	private void deleteRow() {
+		try {
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			int rowIndex = table.getSelectedRow();
+			String selectedID = model.getValueAt(rowIndex, 0).toString();
+			int selectedIDint = Integer.parseInt(selectedID);
+			Administrator admin = biblioteka.getAdmin().get(rowIndex);
+			admin.setJeObrisan(true);
+			biblioteka.snimiAdministratore();
+			
+			textField.setText("");
+			textField_1.setText("");
+			textField_8.setText("");
+			textField_2.setText("");
+			textField_3.setText("");
+			textField_4.setText("");
+			textField_6.setText("");
+			textField_7.setText("");
+			textField_5.setText("");
+			
+			model.removeRow(selectedIDint);
+			table.setModel(model);
+			model.fireTableDataChanged();
+
+		}catch(ArrayIndexOutOfBoundsException x) {
+			JOptionPane.showMessageDialog(null, "Izaberite red", "Greska", JOptionPane.WARNING_MESSAGE);
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Greska" + e, "Greska", JOptionPane.WARNING_MESSAGE);
+		}
+		}
+	
+	
 	public AdminProzor(Biblioteka biblioteka) {
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
@@ -59,7 +161,7 @@ public class AdminProzor extends JFrame {
 				aktivniAdmini.add(admin);
 			}
 		}
-		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "ADRESA", "PLATA"};
+		String[] zaglavlja = new String[] {"ID", "IME", "PREZIME","JMBG", "ADRESA", "POL","KORISNICKO IME","KORISNICKA SIFRA", "PLATA"};
 		Object[][] sadrzaj = new Object[aktivniAdmini.size()+1][zaglavlja.length];
 		
 		sadrzaj[0][0] = zaglavlja[0];
@@ -67,13 +169,22 @@ public class AdminProzor extends JFrame {
 		sadrzaj[0][2] = zaglavlja[2];
 		sadrzaj[0][3] = zaglavlja[3];
 		sadrzaj[0][4] = zaglavlja[4];
+		sadrzaj[0][5] = zaglavlja[5];
+		sadrzaj[0][6] = zaglavlja[6];
+		sadrzaj[0][7] = zaglavlja[7];
+		sadrzaj[0][8] = zaglavlja[8];
+		
 		for(int i=0; i<aktivniAdmini.size(); i++) {
 			Administrator admin = aktivniAdmini.get(i);
-			sadrzaj[i+1][0] = admin.getIme();
-			sadrzaj[i+1][1] = admin.getPrezime();
-			sadrzaj[i+1][2] = admin.getPol();
-			sadrzaj[i+1][3] = admin.getAdresa();
-			sadrzaj[i+1][4] = String.valueOf(admin.getPlata());
+			sadrzaj[i+1][0] = admin.getId();
+			sadrzaj[i+1][1] = admin.getIme();
+			sadrzaj[i+1][2] = admin.getPrezime();
+			sadrzaj[i+1][3] = admin.getJMBG();
+			sadrzaj[i+1][4] = admin.getAdresa();
+			sadrzaj[i+1][5] = admin.getPol();
+			sadrzaj[i+1][6] = admin.getKorisnickoIme();
+			sadrzaj[i+1][7] = admin.getKorisnickaSifra();
+			sadrzaj[i+1][8] = String.valueOf(admin.getPlata());
 		}
 		
 		DefaultTableModel tabelaAdmina = new DefaultTableModel(sadrzaj, zaglavlja);
@@ -171,6 +282,11 @@ public class AdminProzor extends JFrame {
 		textField_8.setColumns(10);
 		
 		JButton btnNewButton = new JButton("UKLONI");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				deleteRow();
+			}
+		});
 		btnNewButton.setBounds(435, 421, 182, 52);
 		panel.add(btnNewButton);
 		
@@ -179,8 +295,15 @@ public class AdminProzor extends JFrame {
 		panel.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("DODAJ");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				addRow();
+			}
+		});
 		btnNewButton_2.setBounds(435, 295, 182, 52);
 		panel.add(btnNewButton_2);
+		
+		
 	}
 
 }
