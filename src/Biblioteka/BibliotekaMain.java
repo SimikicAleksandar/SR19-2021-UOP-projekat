@@ -10,6 +10,7 @@ import Osobe.Pol;
 import Osobe.TipClanarine;
 import gui.GlavniProzor;
 import knjige.Knjiga;
+import knjige.PrimerakKnjige;
 import knjige.ZanrKnjige;
 
 public class BibliotekaMain {
@@ -42,8 +43,11 @@ public class BibliotekaMain {
 			System.out.println(knjiga.getNaslovKnjige());
 		}
 		
-		
-		
+//		biblioteka.ucitajPrimerakKnjige();
+//		for(PrimerakKnjige primerak : biblioteka.getPrimerciKnjiga()) {
+//			System.out.println("Bilo sta");
+//		}
+//		
 		GlavniProzor lp = new GlavniProzor(biblioteka);
 		lp.setVisible(true);
 	}

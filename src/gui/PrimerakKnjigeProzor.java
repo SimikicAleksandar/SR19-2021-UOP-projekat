@@ -70,7 +70,8 @@ public class PrimerakKnjigeProzor extends JFrame {
 				aktivniPrimerci.add(primerak);
 			}
 		}
-		String[] zaglavlja = new String[] {"KNJIGA", "BR STRANA", "TIP POVEZA", "GODINA","JEZIK"};
+		
+		String[] zaglavlja = new String[] {"KNJIGA", "ID PRIMERKA", "BR STRANA", "TIP POVEZA", "GODINA STAMPANJA", "JEZIK"};
 		Object[][] sadrzaj = new Object[aktivniPrimerci.size()+1][zaglavlja.length];
 		
 		sadrzaj[0][0] = zaglavlja[0];
@@ -78,10 +79,13 @@ public class PrimerakKnjigeProzor extends JFrame {
 		sadrzaj[0][2] = zaglavlja[2];
 		sadrzaj[0][3] = zaglavlja[3];
 		sadrzaj[0][4] = zaglavlja[4];
+		sadrzaj[0][5] = zaglavlja[5];
 		for(int i=0; i<aktivniPrimerci.size(); i++) {			
+			
 			PrimerakKnjige primerak = aktivniPrimerci.get(i);
 			
 			sadrzaj[i+1][0] = primerak.getKnjiga().getId();	
+			sadrzaj[i+1][1] = primerak.getIdPrimerka();
 			sadrzaj[i+1][1] = primerak.getBrStrana();
 			sadrzaj[i+1][2] = primerak.getTip();
 			sadrzaj[i+1][3] = primerak.getGodinaStampanja();

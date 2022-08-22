@@ -169,8 +169,8 @@ public class Biblioteka {
 				String korisnickoIme = lineSplit[6];
 				String korisnickaSifra = lineSplit[7];
 				double plata = Double.parseDouble(lineSplit[8]);
-//				boolean jeObrisan = Boolean.parseBoolean(lineSplit[9]);
-				Administrator administrator = new Administrator(id, ime, prezime, jMBG, adresa, pol, korisnickoIme, korisnickaSifra, plata, false);
+				boolean jeObrisan = Boolean.parseBoolean(lineSplit[9]);
+				Administrator administrator = new Administrator(id, ime, prezime, jMBG, adresa, pol, korisnickoIme, korisnickaSifra, plata, jeObrisan);
 				this.administratori.add(administrator);
 			}
 		} catch (IOException e) {
@@ -182,7 +182,7 @@ public class Biblioteka {
 		String sadrzaj = "";
 		for (Administrator administrator : this.administratori) {
 			sadrzaj += administrator.getId()+ "|"  + administrator.getIme()+ "|" + administrator.getPrezime() + "|" + administrator.getJMBG() + "|" + administrator.getAdresa()  + "|" + administrator.getPol()  + "|" + administrator.getKorisnickoIme() + 
-					"|" + administrator.getKorisnickaSifra()   + "|" + administrator.getPlata() + "|"  +"\n";
+					"|" + administrator.getKorisnickaSifra()   + "|" + administrator.getPlata() + "|" + administrator.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/administratori.txt");
@@ -518,7 +518,7 @@ public class Biblioteka {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
 		}
 	}
-	
+	//ARRAY LISTE ZA ADMINE
 	public ArrayList<Administrator> getAdmin() {
 		return administratori;
 	}
@@ -531,12 +531,125 @@ public class Biblioteka {
 		this.administratori.remove(admin);
 	}
 
-	public ArrayList<Administrator> sviAdmnini() {
-		ArrayList<Administrator> sviadmnini = new ArrayList<Administrator>();
+	public ArrayList<Administrator> sviAdmini() {
+		ArrayList<Administrator> sviadmini = new ArrayList<Administrator>();
 		for (Administrator admin : administratori) {
-			sviadmnini.add(admin);
+			sviadmini.add(admin);
 		}
-		return sviadmnini;
+		return sviadmini;
 	}
+	
+	//ARRAY LISTE ZA BIBLIOTEKARE
+	
+	public ArrayList<Bibliotekar> getBibliotekari1(){
+		return bibliotekari;
+	}
+
+	public void addBibliotekar(Bibliotekar novi) {
+		this.bibliotekari.add(novi);
+	}
+
+	public void delBibliotekar(Bibliotekar bibliotekar) {
+		this.bibliotekari.remove(bibliotekar);
+	}
+
+	public ArrayList<Bibliotekar> sviBibliotekari() {
+		ArrayList<Bibliotekar> svibibliotekari = new ArrayList<Bibliotekar>();
+		for (Bibliotekar bibliotekar : bibliotekari) {
+			svibibliotekari.add(bibliotekar);
+		}
+		return svibibliotekari;
+	}
+	
+	//ARRAY LISTE ZA CLANOVE
+	
+	public ArrayList<ClanBiblioteke> getClan() {
+		return clanovi;
+	}
+
+	public void addClan(ClanBiblioteke clan) {
+		this.clanovi.add(clan);
+	}
+
+	public void delClan(ClanBiblioteke clan) {
+		this.clanovi.remove(clan);
+	}
+
+	public ArrayList<ClanBiblioteke> sviClanovi() {
+		ArrayList<ClanBiblioteke> sviclanovi = new ArrayList<ClanBiblioteke>();
+		for (ClanBiblioteke clan : clanovi) {
+			sviclanovi.add(clan);
+		}
+		return sviclanovi;
+	}
+	
+	//ARRAY LISTE ZA KNJIGE
+	
+	public ArrayList<Knjiga> getKnjiga() {
+		return knjige;
+	}
+
+	public void addKnjiga(Knjiga knjiga) {
+		this.knjige.add(knjiga);
+	}
+
+	public void delKnjiga(Knjiga knjiga) {
+		this.knjige.remove(knjiga);
+	}
+
+	public ArrayList<Knjiga> sveKnjige() {
+		ArrayList<Knjiga> sveknjige = new ArrayList<Knjiga>();
+		for (Knjiga knjiga : knjige) {
+			sveknjige.add(knjiga);
+		}
+		return sveknjige;
+	}
+	
+	//ARRAY LISTE ZA ZANROVE
+	
+	public ArrayList<ZanrKnjige> getZanr() {
+		return zanrovi;
+	}
+
+	public void addZanr(ZanrKnjige zanr) {
+		this.zanrovi.add(zanr);
+	}
+
+	public void delZanr(ZanrKnjige zanr) {
+		this.zanrovi.remove(zanr);
+	}
+
+	public ArrayList<ZanrKnjige> sviZanrovi() {
+		ArrayList<ZanrKnjige> svizanrovi = new ArrayList<ZanrKnjige>();
+		for (ZanrKnjige zanr : zanrovi) {
+			svizanrovi.add(zanr);
+		}
+		return svizanrovi;
+	}
+	
+//	//ARRAY LISTE ZA PRIMERKE KNJIGE
+//	
+//	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {
+//		return primerak;
+//	}
+//
+//	public void addPrimer(PrimerakKnjige knjiga) {
+//		this.primerak.add(knjiga);
+//	}
+//
+//	public void delPrimer(PrimerakKnjige knjiga) {
+//		this.primerak.remove(knjiga);
+//	}
+//
+//	public ArrayList<PrimerakKnjige> sviPrimeri() {
+//		ArrayList<PrimerakKnjige> sviprimeri = new ArrayList<PrimerakKnjige>();
+//		for (primerakKnjige knjiga : primerak) {
+//			sviprimeri.add(knjiga);
+//		}
+//		return sviprimeri;
+//	}
+//	
+//	
+	
 	
 }

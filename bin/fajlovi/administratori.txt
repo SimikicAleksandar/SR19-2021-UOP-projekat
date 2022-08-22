@@ -1,1 +1,8 @@
-3321|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.00|false
+1|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
+2|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
+3|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|true
+4|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
+5|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
+6|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
+7|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
+8|Aleksandar|Simkela|260800213134|NAJJACI123|MUSKI|Aciko|Acikol|9999999.0|false
