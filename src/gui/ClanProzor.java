@@ -3,6 +3,9 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
+import java.time.LocalDate;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -13,10 +16,14 @@ import javax.swing.table.DefaultTableModel;
 
 import Biblioteka.Biblioteka;
 import Osobe.Administrator;
+import Osobe.Bibliotekar;
 import Osobe.ClanBiblioteke;
+import Osobe.Pol;
+import Osobe.TipClanarine;
 
 import javax.swing.JTable;
 import javax.swing.JLabel;
+import javax.swing.JOptionPane;
 import javax.swing.JTextField;
 import javax.swing.ListSelectionModel;
 import javax.swing.JRadioButton;
@@ -28,20 +35,21 @@ import javax.swing.JPanel;
 import javax.swing.border.EmptyBorder;
 
 public class ClanProzor extends JFrame {
-
+	private Biblioteka biblioteka;
+	private DefaultTableModel model;
 	private JPanel contentPane;
 	private JTable table;
-	private JLabel lblNewLabel;
-	private JLabel lblNewLabel_1;
-	private JLabel lblNewLabel_2;
-	private JLabel lblNewLabel_3;
-	private JLabel lblNewLabel_4;
-	private JLabel lblNewLabel_5;
-	private JLabel lblNewLabel_6;
-	private JLabel lblNewLabel_7;
-	private JLabel lblNewLabel_8;
-	private JLabel lblNewLabel_9;
-	private JLabel lblNewLabel_10;
+	private JLabel lblNewLabel; //----> ID
+	private JLabel lblNewLabel_1; //----> IME
+	private JLabel lblNewLabel_2; //----> PREZIME
+	private JLabel lblNewLabel_3; //----> JMBG
+	private JLabel lblNewLabel_4; //----> ADRESA
+	private JLabel lblNewLabel_5; //----> POL
+	private JLabel lblNewLabel_6; //----> BROJ CLANSKE KARTE
+	private JLabel lblNewLabel_7; //----> TIP CLANARINE ?
+	private JLabel lblNewLabel_8; //----> DATUM POSLEDNJE UPLATE
+	private JLabel lblNewLabel_9; //----> BROJ MESECI CLANARINE
+	private JLabel lblNewLabel_10; //----> AKTIVNOST
 	private JTextField textField;
 	private JTextField textField_1;
 	private JTextField textField_2;
@@ -53,8 +61,189 @@ public class ClanProzor extends JFrame {
 	private JTextField textField_8;
 	private JTextField textField_9;
 
+	/* DODAJ */
+	public static boolean validacijaBroja(String str) { 
+        try { 
+                Integer.parseInt(str); 
+                return true; 
+        } catch (NumberFormatException e) { 
+                JOptionPane.showMessageDialog(null, "ID mora biti broj", "Error", JOptionPane.WARNING_MESSAGE); 
+                return false; 
+        } 
+}
+	
+	private void add_Row() {
+		try {
+			boolean error = false;
+			int id = Integer.parseInt(textField.getText());
+			int brojMeseciClanarine = Integer.parseInt(textField_9.getText());
+			boolean obrisan = false;
+			boolean isActive = false;
+			LocalDate datum = LocalDate.parse(textField_8.getText());
+			int jedanTip = Integer.parseInt(textField_7.getText());
+			TipClanarine clanarina = null;
+			
+			for(TipClanarine clanarine : biblioteka.getTipovi()) {
+				if(clanarine.getId() == (jedanTip)) {
+					clanarina = clanarine ;
+				}
+			}
+			
+			Pol polovi = Pol.valueOf(textField_5.getText());
+			if (validacijaBroja(textField.getText()) == true) {
+				
+				ClanBiblioteke updated = new ClanBiblioteke(id, textField_1.getText(), textField_2.getText(),
+						textField_3.getText(), textField_4.getText(), polovi, textField_6.getText(),
+						clanarina, datum, brojMeseciClanarine, isActive, obrisan);
+				String[] zaglavlja = new String[] {"ID", "IME", "PREZIME", "JMBG", "ADRESA", "POL", "BROJ CLANSKE KARTE", "BROJ MESECI CLANRAINE", /*, "AKTIVNOST"*/};
+
+				
+				Object[][] sadrzaj1 = new Object[biblioteka.getClanovi().size()][zaglavlja.length];
+				Object[] sadrzaj = new Object[zaglavlja.length];
+				
+				for (int x = 0; x < biblioteka.getClanovi().size(); x++) {
+					ClanBiblioteke clan = biblioteka.getClanovi().get(x);
+					sadrzaj1[x][0] = clan.getId();
+					if (updated.getId() == clan.getId()) {
+						JOptionPane.showMessageDialog(null, "Entitet sa istim id-om vec postoji", "Greska",
+								JOptionPane.WARNING_MESSAGE);
+						error = true;
+						break;
+					}
+
+				}
+				if (error != true) {
+					double cena = nadjiCenu(clanarina, brojMeseciClanarine);
+					System.out.println(cena);
+					JOptionPane.showMessageDialog(null, "Treba da uplatite "+ cena, "Racun", JOptionPane.INFORMATION_MESSAGE);
+					biblioteka.addClan(updated);
+					biblioteka.snimiClanove();
+					sadrzaj[0] = updated.getId();
+					sadrzaj[1] = updated.getIme();
+					sadrzaj[2] = updated.getPrezime();
+					sadrzaj[3] = updated.getJMBG();
+					sadrzaj[4] = updated.getAdresa();
+					sadrzaj[5] = updated.getPol();
+					sadrzaj[6] = updated.getBrClanKarte();
+					sadrzaj[7] = updated.getTipclanarine().getNaziv();
+					sadrzaj[8] = updated.getDatumPoslednjeUplate();
+					sadrzaj[9] = updated.getBrojMeseciClanarine();
+					sadrzaj[10] = updated.isActive();
+					sadrzaj[11] = updated.isJeObrisan();
+					
+					biblioteka.snimiClanove();
+					model.addRow(sadrzaj);
+					table.setModel(model);
+
+				}
+			}
+		}
+		 catch (NumberFormatException x) {
+			JOptionPane.showMessageDialog(null, "Uneli ste slovo u input polje za broj", "Greska",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		
+	}
+
+	
+///////////////////////////METODA ZA TRAZENJE CENE I ZADATAK ZA DESET/////////////////////////////////////////////
+	
+		public static double nadjiCenu(TipClanarine clanarina, int brojMeseciClanarine) {
+        double pocetnaCena = clanarina.getCena();
+        double popust = 0;
+
+        if (brojMeseciClanarine >= 6) {
+            if (brojMeseciClanarine >= 12) {
+                popust = 20;
+            } else {
+                popust = 10;
+            }            
+        }
+
+        double cena = ((pocetnaCena * brojMeseciClanarine) * ((100 - popust )/ 100));
+        return Math.round(cena);
+    }
+////////////////////////////////////////////////////////////////////////////////////////////////////////////	
+
+	/* AZURIRAJ */
+
+//	private void updateRow() {
+//		try {
+//
+//			String[] zaglavlja = new String[] {"ID", "IME", "PREZIME", "JMBG", "ADRESA", "POL", "BROJ MESECI CLANRAINE", "BROJ CLANSKE KARTE" /*, "AKTIVNOST"*/};
+//			Object[][] sadrzaj1 = new Object[biblioteka.getClanovi().size()][zaglavlja.length];
+//			Object[] sadrzaj = new Object[zaglavlja.length];
+//			String ID = textField.getText();
+//			
+//			if (validacijaBroja(ID) == true) {
+//				boolean error = false;
+//				int id = Integer.parseInt(textField.getText());
+//				double textPlataDouble = Double.parseDouble(textField_8.getText());
+//				DefaultTableModel model = (DefaultTableModel) table.getModel();
+//				int rowIndex = table.getSelectedRow();
+//				String selectedID = model.getValueAt(rowIndex, 0).toString();
+//				int selectedIDint = Integer.parseInt(selectedID);
+//				
+//				Pol pol = Pol.valueOf(textField_5.getText());
+//				boolean obrisan = false;
+//
+//				Bibliotekar bibliotekarcina = biblioteka.getBibliotekari().get(rowIndex);
+//				Bibliotekar bibliotekarcina2 = new Bibliotekar(id, textField_1.getText(), textField_2.getText(),
+//						textField_3.getText(), textField_4.getText(), pol, textField_6.getText(),
+//						textField_7.getText(), textPlataDouble, obrisan);
+//
+//				for (int x = 0; x < biblioteka.getBibliotekari().size(); x++) {
+//					Bibliotekar current = biblioteka.getBibliotekari().get(x);
+//					if (current.getId() == bibliotekarcina2.getId()) {						
+//						JOptionPane.showMessageDialog(null, "Entitet sa istim id-om vec postoji", "Greska",
+//								JOptionPane.WARNING_MESSAGE);
+//						error = true;
+//							break;				
+//					}
+//				}
+//
+//				if (error != true) {
+//
+//					bibliotekarcina.setId(id);
+//					bibliotekarcina.setIme(textField_1.getText());
+//					bibliotekarcina.setPrezime(textField_2.getText());
+//					bibliotekarcina.setJMBG(textField_3.getText());
+//					bibliotekarcina.setAdresa(textField_4.getText());
+//					bibliotekarcina.setPol(pol);
+//					bibliotekarcina.setKorisnickoIme(textField_6.getText());
+//					bibliotekarcina.setKorisnickaSifra(textField_7.getText());
+//					bibliotekarcina.setPlata(textPlataDouble);
+//
+//
+//					model.setValueAt(bibliotekarcina.getId(), rowIndex, 0);
+//					model.setValueAt(bibliotekarcina.getIme(), rowIndex, 1);
+//					model.setValueAt(bibliotekarcina.getPrezime(), rowIndex, 2);
+//					model.setValueAt(bibliotekarcina.getJMBG(), rowIndex, 3);
+//					model.setValueAt(bibliotekarcina.getAdresa(), rowIndex, 4);
+//					model.setValueAt(bibliotekarcina.getPol(), rowIndex, 5);
+//					model.setValueAt(bibliotekarcina.getKorisnickoIme(), rowIndex, 6);
+//					model.setValueAt(bibliotekarcina.getKorisnickaSifra(), rowIndex, 7);
+//					model.setValueAt(bibliotekarcina.getPlata(), rowIndex, 8);
+//
+//					biblioteka.snimiBibliotekari();
+//					model.fireTableRowsInserted(rowIndex, selectedIDint);
+//					table.setModel(model);
+//					model.fireTableDataChanged();
+//				}
+//			}
+//
+//		} catch (ArrayIndexOutOfBoundsException e) {
+//			JOptionPane.showMessageDialog(null, "Izaberite red", "Greska", JOptionPane.WARNING_MESSAGE);
+//		} catch (NumberFormatException x) {
+//			JOptionPane.showMessageDialog(null, "Unesite broj kao input", "Greska",
+//					JOptionPane.WARNING_MESSAGE);
+//		}
+//	}
+	
+	
 
 	public ClanProzor(Biblioteka biblioteka) {
+		this.biblioteka = biblioteka; 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
 		contentPane = new JPanel();
@@ -67,12 +256,13 @@ public class ClanProzor extends JFrame {
 		contentPane.add(panel);
 	/////TABELA
 		ArrayList<ClanBiblioteke> aktivniClanovi = new ArrayList<ClanBiblioteke>();
+		
 		for(ClanBiblioteke clan:biblioteka.getClanovi()) {
 			if(!clan.isJeObrisan()) {
 				aktivniClanovi.add(clan);
 			}
 		}
-		String[] zaglavlja = new String[] {"IME", "PREZIME", "POL", "BROJ CLANSKE KARTE", "AKTIVNOST"};
+		String[] zaglavlja = new String[] {"ID", "IME", "PREZIME", "JMBG", "ADRESA", "POL", "BROJ MESECI CLANRAINE", "BROJ CLANSKE KARTE" /*, "AKTIVNOST"*/};
 		Object[][] sadrzaj = new Object[aktivniClanovi.size()+1][zaglavlja.length];
 		
 		sadrzaj[0][0] = zaglavlja[0];
@@ -80,17 +270,27 @@ public class ClanProzor extends JFrame {
 		sadrzaj[0][2] = zaglavlja[2];
 		sadrzaj[0][3] = zaglavlja[3];
 		sadrzaj[0][4] = zaglavlja[4];
+		sadrzaj[0][5] = zaglavlja[5];
+		sadrzaj[0][6] = zaglavlja[6];
+		sadrzaj[0][7] = zaglavlja[7];
+		//sadrzaj[0][8] = zaglavlja[8];
 		for(int i=0; i<aktivniClanovi.size(); i++) {
 			ClanBiblioteke clan = aktivniClanovi.get(i);
-			sadrzaj[i+1][0] = clan.getIme();
-			sadrzaj[i+1][1] = clan.getPrezime();
-			sadrzaj[i+1][2] = clan.getPol();
-			sadrzaj[i+1][3] = clan.getBrClanKarte();
-			sadrzaj[i+1][4] = String.valueOf(clan.isActive());
+			sadrzaj[i+1][0] = clan.getId();
+			sadrzaj[i+1][1] = clan.getIme();
+			sadrzaj[i+1][2] = clan.getPrezime();
+			sadrzaj[i+1][3] = clan.getJMBG();
+			sadrzaj[i+1][4] = clan.getAdresa();
+			sadrzaj[i+1][5] = clan.getPol();
+			sadrzaj[i+1][6] = clan.getBrojMeseciClanarine();
+			sadrzaj[i+1][7] = clan.getBrClanKarte();
+			//sadrzaj[i+1][8] = String.valueOf(clan.isActive());
 		}
 		
-		DefaultTableModel tabelaClanova = new DefaultTableModel(sadrzaj, zaglavlja);
-		table = new JTable(tabelaClanova);
+		
+		this.model = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(this.model);
+
 		table.setBounds(10, 11, 350, 489);
 		table.getColumnModel().getColumn(0).setPreferredWidth(59);
 		panel.add(table);
@@ -203,16 +403,32 @@ public class ClanProzor extends JFrame {
 		contentPane.add(rdbtnNewRadioButton);
 		
 		JButton btnNewButton = new JButton("UKLONI");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				//deleteRow();
+			}
+		});
 		btnNewButton.setBounds(434, 434, 182, 52);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("AZURIRAJ");
+		 btnNewButton_1.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	              // updateRow();
+	            }
+	        });
 		btnNewButton_1.setBounds(434, 371, 182, 52);
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("DODAJ");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+				add_Row();
+			}
+		});
 		btnNewButton_2.setBounds(434, 308, 182, 52);
 		contentPane.add(btnNewButton_2);
 	}
 
 }
+

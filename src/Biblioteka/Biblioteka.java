@@ -109,7 +109,7 @@ public class Biblioteka {
 	public void setZanrovi(ArrayList<ZanrKnjige> zanrovi) {
 		this.zanrovi = zanrovi;
 	}
-	
+
 	
 	
 	
@@ -248,7 +248,7 @@ public class Biblioteka {
 				int id = Integer.parseInt(lineSplit[0]);
 				String naziv = lineSplit[1];
 				double cena = Double.parseDouble(lineSplit[2]);
-				TipClanarine tip = new TipClanarine(id,naziv,cena);
+				TipClanarine tip = new TipClanarine(id,naziv,cena, false); //moguca greska ovde !
 				this.tipovi.add(tip);
 			}
 		} catch (IOException e) {
@@ -282,6 +282,7 @@ public class Biblioteka {
         }
 	
 	public void ucitajClanove() {
+		ucitajClanarinu();           
 		try {
 			File korisniciFile = new File("src/fajlovi/clanovi.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
@@ -301,7 +302,16 @@ public class Biblioteka {
 				boolean isActive = Boolean.parseBoolean(lineSplit[10]);
 				boolean jeObrisan = Boolean.parseBoolean(lineSplit[11]);
 				ClanBiblioteke clan = new ClanBiblioteke(id, ime, prezime, jMBG, adresa, pol, brClanKarte, tip, datumPoslednjeUplate, brojMeseciClanarine, isActive, jeObrisan);
-				this.clanovi.add(clan);
+				boolean duplikat = false ;
+				for(ClanBiblioteke cl : this.getClan()) {
+					if(cl.getId() == id) {
+						duplikat = true ;
+						break;
+					}
+				}
+				if(!duplikat) {
+					this.clanovi.add(clan);
+				}            
 			}
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
@@ -626,7 +636,44 @@ public class Biblioteka {
 		}
 		return svizanrovi;
 	}
+	public void ucitajClanarinu() {
+        try {
+            File clanarinaFile = new File("src/fajlovi/tipClanarine.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(clanarinaFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] lineSplit = line.split("\\|");
+                int id = Integer.parseInt(lineSplit[0]);
+                String naziv = lineSplit[1];
+                double cena = Double.parseDouble(lineSplit[2]);
+                boolean jeObrisan = Boolean.parseBoolean(lineSplit[3]);
+                System.out.println(id);
+                System.out.println(naziv);
+                System.out.println(cena);
+                System.out.println(jeObrisan);
+                
+                TipClanarine clanarina = new TipClanarine(id, naziv, cena, jeObrisan);
+                this.tipovi = new ArrayList<TipClanarine>();
+                //this.tipovi.add(clanarina);
+            }
+        } catch (IOException e) {
+            System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+        }
+    }
 	
+	public TipClanarine nadji_TipClanarine(int id) {
+        TipClanarine tip = null;
+        this.ucitajClanarinu();
+        for (TipClanarine clanarina : this.getTipovi()) {
+            if (clanarina.getId() == id) {
+                tip = clanarina;
+            }
+        }
+        return tip;
+	}
+	
+	
+
 //	//ARRAY LISTE ZA PRIMERKE KNJIGE
 //	
 //	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {

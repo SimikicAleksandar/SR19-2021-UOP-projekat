@@ -3,6 +3,8 @@ package gui;
 import java.awt.BorderLayout;
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.event.ActionEvent;
+import java.awt.event.ActionListener;
 import java.util.ArrayList;
 
 import javax.swing.JButton;
@@ -30,7 +32,7 @@ import javax.swing.border.EmptyBorder;
 
 public class PrimerakKnjigeProzor extends JFrame {
 
-
+	private DefaultTableModel model;
 	private JPanel contentPane;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
@@ -45,9 +47,10 @@ public class PrimerakKnjigeProzor extends JFrame {
 	private JTextField textField_4;
 	private JRadioButton rdbtnNewRadioButton;
 	private JTable table;
-
+	private Biblioteka biblioteka;
 
 	public PrimerakKnjigeProzor(Biblioteka biblioteka) {
+		this.biblioteka = biblioteka; 
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE);
 		setBounds(100, 100, 700, 550);
 		contentPane = new JPanel();
@@ -91,9 +94,9 @@ public class PrimerakKnjigeProzor extends JFrame {
 			sadrzaj[i+1][3] = primerak.getGodinaStampanja();
 			sadrzaj[i+1][4] = primerak.getJezikStampanja();
 		}
+		this.model = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(this.model);
 		
-		DefaultTableModel tabelaZanrova = new DefaultTableModel(sadrzaj, zaglavlja);
-		table = new JTable(tabelaZanrova);
 		table.setBounds(10, 11, 320, 239);
 		table.getColumnModel().getColumn(0).setPreferredWidth(60);
 		panel.add(table);
@@ -162,14 +165,29 @@ public class PrimerakKnjigeProzor extends JFrame {
 		contentPane.add(rdbtnNewRadioButton);
 	
 		JButton btnNewButton = new JButton("UKLONI");
+		btnNewButton.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			//	deleteRow();
+			}
+		});
 		btnNewButton.setBounds(449, 374, 182, 52);
 		contentPane.add(btnNewButton);
 		
 		JButton btnNewButton_1 = new JButton("AZURIRAJ");
+		 btnNewButton_1.addActionListener(new ActionListener() {
+	            public void actionPerformed(ActionEvent e) {
+	            //    updateRow();
+	            }
+	        });
 		btnNewButton_1.setBounds(449, 311, 182, 52);
 		contentPane.add(btnNewButton_1);
 		
 		JButton btnNewButton_2 = new JButton("DODAJ");
+		btnNewButton_2.addActionListener(new ActionListener() {
+			public void actionPerformed(ActionEvent e) {
+			//	add_Row();
+			}
+		});
 		btnNewButton_2.setBounds(449, 248, 182, 52);
 		contentPane.add(btnNewButton_2);
 		

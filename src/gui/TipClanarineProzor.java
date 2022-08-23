@@ -95,6 +95,7 @@ public class TipClanarineProzor extends JFrame {
 		textField_2.setColumns(10);
 		
 		btnNewButton = new JButton("UKLONI");
+		
 		btnNewButton.setBounds(468, 212, 104, 38);
 		contentPane.add(btnNewButton);
 		

@@ -20,12 +20,12 @@ public class BibliotekaMain {
 		
 		biblioteka.ucitajAdministratore();
 		for(Administrator administrator : biblioteka.getAdministratori()) {
-			System.out.println(administrator.getKorisnickoIme());
+			System.out.println(""/*administrator.getKorisnickoIme()*/);
 		}
 	        
 		biblioteka.ucitajBibliotekare();
 		for(Bibliotekar bibliotekar : biblioteka.getBibliotekari()) {
-			System.out.println(bibliotekar.getKorisnickoIme());
+			System.out.println(""/*bibliotekar.getKorisnickoIme()*/);
 		}
 		
 		biblioteka.ucitajClanove();

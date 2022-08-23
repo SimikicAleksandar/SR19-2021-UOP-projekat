@@ -24,7 +24,7 @@ import java.util.ArrayList;
 import java.awt.event.ActionEvent;
 
 public class ZanroviProzro extends JFrame {
-
+	private DefaultTableModel model;
 	private JPanel contentPane;
 	private JLabel lblNewLabel;
 	private JLabel lblNewLabel_1;
@@ -34,9 +34,10 @@ public class ZanroviProzro extends JFrame {
 	private JButton btnNewButton_1;
 	private JButton btnNewButton_2;
 	private JTable table;
-
+	private Biblioteka biblioteka;
 
 	public ZanroviProzro(Biblioteka biblioteka) {
+		this.biblioteka = biblioteka;
 		setDefaultCloseOperation(JFrame.DISPOSE_ON_CLOSE); 
 		setBounds(100, 100, 700, 300);
 		contentPane = new JPanel();
@@ -68,9 +69,9 @@ public class ZanroviProzro extends JFrame {
 			sadrzaj[i+1][0] = zanr.getOznaka();
 			sadrzaj[i+1][1] = zanr.getOpisZanra();
 			}
+		this.model = new DefaultTableModel(sadrzaj, zaglavlja);
+		table = new JTable(this.model);
 		
-		DefaultTableModel tabelaZanrova = new DefaultTableModel(sadrzaj, zaglavlja);
-		table = new JTable(tabelaZanrova);
 		table.setBounds(10, 11, 320, 239);
 		panel.add(table);
 		
@@ -100,18 +101,29 @@ public class ZanroviProzro extends JFrame {
 		textField_1.setColumns(10);
 		
 		btnNewButton = new JButton("DODAJ");
-		btnNewButton.addActionListener(new ActionListener() {
+		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
+			//	add_Row();
 			}
 		});
 		btnNewButton.setBounds(483, 102, 119, 40);
 		panel.add(btnNewButton);
 		
 		btnNewButton_1 = new JButton("AZURIRAJ");
+		btnNewButton_1.addActionListener(new ActionListener() {
+            public void actionPerformed(ActionEvent e) {
+             //   updateRow();
+            }
+        });
 		btnNewButton_1.setBounds(483, 153, 119, 40);
 		panel.add(btnNewButton_1);
 		
 		btnNewButton_2 = new JButton("UKLONI");
+		btnNewButton.addActionListener(new ActionListener() {
+		public void actionPerformed(ActionEvent e) {
+		//	deleteRow();
+		}
+	});
 		btnNewButton_2.setBounds(483, 210, 119, 40);
 		panel.add(btnNewButton_2);
 		
