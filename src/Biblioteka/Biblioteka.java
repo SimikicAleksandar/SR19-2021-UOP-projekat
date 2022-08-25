@@ -347,13 +347,13 @@ public class Biblioteka {
 			String line;
 			while ((line = reader.readLine()) != null) {
 				String[] lineSplit = line.split("\\|");
-				String oznaka = lineSplit[0];
+				int id = Integer.parseInt(lineSplit[0]);
 				String opisZanra = lineSplit[1];
 				boolean jeObrisan = Boolean.parseBoolean(lineSplit[2]);
-				ZanrKnjige zanr = new ZanrKnjige(oznaka, opisZanra, jeObrisan);
+				ZanrKnjige zanr = new ZanrKnjige(id, opisZanra, jeObrisan);
 				boolean duplikat = false ;
-				for(ZanrKnjige zanrKnjige : this.zanrovi) {
-					if(zanrKnjige.getOznaka().equals(oznaka)) {
+				for(ZanrKnjige zk : this.getZanrovi()) {
+					if(zk.getId() == id) {
 						duplikat = true ;
 						break;
 					}
@@ -370,7 +370,7 @@ public class Biblioteka {
 	public void snimiZanr() {
 		String sadrzaj = "";
 		for (ZanrKnjige zanr : this.zanrovi) {
-			sadrzaj += zanr.getOznaka() + "|"  + zanr.getOpisZanra()  + "|" + zanr.isJeObrisan() +"\n";
+			sadrzaj += zanr.getId() + "|"  + zanr.getOpisZanra()  + "|" + zanr.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/zanrovi.txt");
@@ -382,21 +382,51 @@ public class Biblioteka {
 		}
 	}
 	
-	public ZanrKnjige nadjiZanr(String oznaka) {
+	public ZanrKnjige nadjiZanr(int id) {
         ZanrKnjige trazeni = null;
         for(int i = 0; i < this.zanrovi.size(); i++) {
-            if (this.zanrovi.get(i).getOznaka().equals(oznaka)) {
+            if (this.zanrovi.get(i).getId() == id) {
                 trazeni = this.zanrovi.get(i);
             }
         }
         return trazeni;
         }
-	
+
+	public void ucitajZanrove() {
+        try {
+            File korisniciFile = new File("src/fajlovi/zanrovi.txt");
+            BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
+            String line;
+            while ((line = reader.readLine()) != null) {
+                String[] lineSplit = line.split("\\|");
+                int id = Integer.parseInt(lineSplit[0]);
+                String opis = lineSplit[1];
+                boolean jeObrisan = Boolean.parseBoolean(lineSplit[2]);
+                ZanrKnjige ZANR = new ZanrKnjige(id, opis, jeObrisan);
+                boolean duplikat = false;
+                for (ZanrKnjige zr : this.getZanr()) {
+                    if (zr.getId() == id) {
+                        duplikat = true;
+                        break;
+                    }
+                }
+                if (!duplikat) {
+                    this.zanrovi.add(ZANR);
+
+                
+            }
+            }
+        } catch (IOException e) {
+            System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
+        }
+
+    }
 	public void ucitajKnjige() {
 		try {
 			File korisniciFile = new File("src/fajlovi/knjiga.txt");
 			BufferedReader reader = new BufferedReader(new FileReader(korisniciFile));
 			String line;
+			ucitajZanrove();
 			while ((line = reader.readLine()) != null) {
 				String[] lineSplit = line.split("\\|");
 				int id = Integer.parseInt(lineSplit[0]);
@@ -406,12 +436,20 @@ public class Biblioteka {
 				int godinaObjavljivanja = Integer.parseInt(lineSplit[4]);
 				String jezikOriginala = lineSplit[5];
 				String opis = lineSplit[6];
-				ZanrKnjige zanr = this.nadjiZanr(lineSplit[7]);
+				//ZanrKnjige zanrKnjige = this.nadjiZanr(Integer.parseInt(lineSplit[7])) ;       
+				int zanrKnjige = Integer.parseInt(lineSplit[7]);
 				boolean jeObrisan = Boolean.parseBoolean(lineSplit[8]);
+				ZanrKnjige zanr = null ;
+				for(ZanrKnjige ZANR : this.zanrovi) {
+					if(ZANR.getId()  == zanrKnjige) {
+						zanr = ZANR ;
+					}
+				}
+				
 				Knjiga knjiga = new Knjiga(id, naslovKnjige, originalNaslovKnjige, pisac, godinaObjavljivanja, jezikOriginala, opis, zanr, jeObrisan);
 				boolean duplikat = false ;
-				for(Knjiga knjigaa : this.knjige) {
-					if(knjiga.getId() == id) {
+				for(Knjiga knjigaa : this.getKnjige()) {
+					if(knjigaa.getId() == id) {
 						duplikat = true ;
 						break;
 					}
@@ -429,7 +467,7 @@ public class Biblioteka {
 		String sadrzaj = "";
 		for (Knjiga knjiga : this.knjige) {
 			sadrzaj += knjiga.getId()+ "|"  + knjiga.getNaslovKnjige() + "|" + knjiga.getOriginalNaslovKnjige() + "|" + knjiga.getPisac()+ "|" + knjiga.getGodinaObjavljivanja()  + "|" + knjiga.getJezikOriginala() + "|" + knjiga.getOpis() + 
-					"|" + knjiga.getZanr().getOznaka() + "|" + knjiga.isJeObrisan() +"\n";
+					"|" + knjiga.getZanr().getId() + "|" + knjiga.isJeObrisan() +"\n";
 		}
 		try {
 			File korisniciFile = new File("src/fajlovi/knjiga.txt");
@@ -440,7 +478,7 @@ public class Biblioteka {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
 		}
 	}
-	
+	///////////////////////////////////////
 	//Ucitavanje i snimanje primeraka knjgie
 	
 	public Knjiga nadjiKnjigu(int id) {
@@ -464,25 +502,33 @@ public class Biblioteka {
 			while ((line = reader.readLine()) != null) {
 				String[] lineSplit = line.split("\\|");
 
-				int idKnjige = Integer.parseInt(lineSplit[0]);
-				int idPrimerka = Integer.parseInt(lineSplit[1]);
+				int id = Integer.parseInt(lineSplit[0]);
+				int idKnjige = Integer.parseInt(lineSplit[1]);
 				int brojStrana = Integer.parseInt(lineSplit[2]);
 				TipPoveza tipPoveza = TipPoveza.valueOf(lineSplit[3]);
-				int godinaStampanja = Integer.parseInt(lineSplit[4]);
-				String jezikStampanja = lineSplit[5];
+				String jezikStampanja = lineSplit[4];
+				int godinaStampanja = Integer.parseInt(lineSplit[5]);				
 				boolean daLiJeIznajmljena = Boolean.parseBoolean(lineSplit[6]);
 				boolean jeObrisan = Boolean.parseBoolean(lineSplit[7]);
+				boolean duplikat = false;
 				Knjiga knjiga = null;
 				for (Knjiga primerak : this.knjige) {
 					if (primerak.getId() == (idKnjige)) {
 						knjiga = primerak;
 					}
 				}
-
-				PrimerakKnjige primerak = new PrimerakKnjige(knjiga, idPrimerka, brojStrana, tipPoveza,godinaStampanja,jezikStampanja, daLiJeIznajmljena, jeObrisan);
-				this.primerciKnjiga.add(primerak);
 				
-
+				PrimerakKnjige primerak = new PrimerakKnjige (id, knjiga, brojStrana, tipPoveza, jezikStampanja, godinaStampanja, daLiJeIznajmljena, jeObrisan);
+				
+				for(PrimerakKnjige pr : this.getPrimerciKnjiga()) {
+					if(pr.getId() == id) {
+						duplikat = true;
+						break;
+					}
+				}
+				if(!duplikat) {
+					this.primerciKnjiga.add(primerak);
+				}
 			}
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
@@ -492,10 +538,10 @@ public class Biblioteka {
 	public void snimiPrimerakKnjige() {
 		String sadrzaj = "";
 		for (PrimerakKnjige primerak : this.primerciKnjiga) {
-			sadrzaj += primerak.getKnjiga() + "|"  + primerak.getBrStrana()  + "|" + primerak.getTip() + primerak.getGodinaStampanja() + "|" + primerak.getJezikStampanja() + "|" + primerak.isDaLiJeIznajmljena() + "|" + primerak.isJeObrisan() + "\n";
+			sadrzaj += primerak.getId() + "|"  + primerak.getKnjige().getId()  + "|" + primerak.getBrStrana() + primerak.getTip() + "|" + primerak.getJezikStampanja() + "|" + primerak.getGodinaStampanja() + "|" + primerak.isDaLiJeIznajmljena() + "|" + primerak.isJeObrisan() +"\n";
 		}
 		try {
-			File korisniciFile = new File("src/fajlovi/zanrovi.txt");
+			File korisniciFile = new File("src/fajlovi/primerakKnjige.txt");
 			BufferedWriter writer = new BufferedWriter(new FileWriter(korisniciFile));
 			writer.write(sadrzaj);
 			writer.close();
@@ -663,29 +709,30 @@ public class Biblioteka {
         return sviclanovi;
     }
 
-//	//ARRAY LISTE ZA PRIMERKE KNJIGE
-//	
-//	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {
-//		return primerak;
-//	}
-//
-//	public void addPrimer(PrimerakKnjige knjiga) {
-//		this.primerak.add(knjiga);
-//	}
-//
-//	public void delPrimer(PrimerakKnjige knjiga) {
-//		this.primerak.remove(knjiga);
-//	}
-//
-//	public ArrayList<PrimerakKnjige> sviPrimeri() {
-//		ArrayList<PrimerakKnjige> sviprimeri = new ArrayList<PrimerakKnjige>();
-//		for (primerakKnjige knjiga : primerak) {
-//			sviprimeri.add(knjiga);
-//		}
-//		return sviprimeri;
-//	}
-//	
-//	
+	//ARRAY LISTE ZA PRIMERKE KNJIGE
+	
+	public ArrayList<PrimerakKnjige> getPrimerakKnjige() {
+		return primerciKnjiga;
+	}
+
+	public void addPrimer(PrimerakKnjige knjiga) {
+		this.primerciKnjiga.add(knjiga);
+	}
+
+	public void delPrimer(PrimerakKnjige knjiga) {
+		this.primerciKnjiga.remove(knjiga);
+	}
+
+	public ArrayList<PrimerakKnjige> sviPrimeri() {
+		ArrayList<PrimerakKnjige> sviprimeri = new ArrayList<PrimerakKnjige>();
+		for (PrimerakKnjige knjiga : primerciKnjiga) {
+			sviprimeri.add(knjiga);
+		}
+		return sviprimeri;
+	}
+	
+	
+	
 	
 	
 }

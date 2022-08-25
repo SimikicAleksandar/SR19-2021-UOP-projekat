@@ -255,7 +255,7 @@ public class ClanProzor extends JFrame {
 		}
 	}
 	
-	//OBRISI
+	
 /* OBRISI */
 	
 	private void deleteRow() {

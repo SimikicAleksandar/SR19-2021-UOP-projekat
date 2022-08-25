@@ -54,172 +54,181 @@ public class KnjigaProzor extends JFrame {
 	private JTextField textField_7; // lblNewLabel_7 = new JLabel("ZANR: ");
 	private Biblioteka biblioteka;
 	
-//	/* DODAJ */
-//	public static boolean validacijaBroja(String str) { 
-//        try { 
-//                Integer.parseInt(str); 
-//                return true; 
-//        } catch (NumberFormatException e) { 
-//                JOptionPane.showMessageDialog(null, "ID mora biti broj", "Error", JOptionPane.WARNING_MESSAGE); 
-//                return false; 
-//        } 
-//}
-//	
-//	private void add_Row() {
-//		try {
-//			boolean error = false;
-//			int id = Integer.parseInt(textField.getText());
-//			boolean obrisan = false;
-//			
-//			int zanr = Integer.parseInt(zanr.getOznaka()); 
-//			if (validacijaBroja(textField.getText()) == true) {
-//				Knjiga updated = new Knjiga(id, textField_1.getText(), textField_2.getText(),
-//						textField_3.getText(), textField_4.getText(), textField_5.getText(), textField_6.getText(),
-//						textField_7.getText(), /*zanr*/, obrisan);
-//				String[] zaglavlja = new String[] {"ID", "NASLOV", "PISAC", "GODINA OBJAVLJIVANJA",  "JEZIK", "OPIS"};
-//
-//				
-//				Object[][] sadrzaj1 = new Object[biblioteka.getKnjige().size()][zaglavlja.length];
-//				Object[] sadrzaj = new Object[zaglavlja.length];
-//				
-//				for (int x = 0; x < biblioteka.getKnjige().size(); x++) {
-//					Knjiga nisamKreativan = biblioteka.getKnjige().get(x);
-//					sadrzaj1[x][0] = nisamKreativan.getId();
-//					if (updated.getId() == nisamKreativan.getId()) {
-//						JOptionPane.showMessageDialog(null, "Entitet sa istim id-om vec postoji", "Greska",
-//								JOptionPane.WARNING_MESSAGE);
-//						error = true;
-//						break;
-//					}
-//
-//				}
-//				if (error != true) {
-//					biblioteka.addKnjiga(updated);
-//					sadrzaj[0] = updated.getId();
-//					sadrzaj[1] = updated.getNaslovKnjige();
-//					sadrzaj[2] = updated.getPisac();
-//					sadrzaj[3] = updated.getGodinaObjavljivanja();
-//					sadrzaj[4] = updated.getJezikOriginala();
-//					sadrzaj[5] = updated.getOpis();
-//					
-//					biblioteka.snimiKnjige();
-//					model.addRow(sadrzaj);
-//					table.setModel(model);
-//				}
-//			}
-//		}
-//		 catch (NumberFormatException x) {
-//			JOptionPane.showMessageDialog(null, "Uneli ste slovo u input polje za broj", "Greska",
-//					JOptionPane.WARNING_MESSAGE);
-//		}
-//		
-//	}
-//	/* AZURIRAJ */
-//
-//	private void updateRow() {
-//		try {
-//
-//			String[] zaglavlja = new String[] {"ID", "NASLOV", "PISAC", "GODINA OBJAVLJIVANJA",  "JEZIK", "OPIS"};
-//			Object[][] sadrzaj1 = new Object[biblioteka.getBibliotekari().size()][zaglavlja.length];
-//			Object[] sadrzaj = new Object[zaglavlja.length];
-//			String ID = textField.getText();
-//			
-//			if (validacijaBroja(ID) == true) {
-//				boolean error = false;
-//				int id = Integer.parseInt(textField.getText());
-//				double textPlataDouble = Double.parseDouble(textField_8.getText());
-//				DefaultTableModel model = (DefaultTableModel) table.getModel();
-//				int rowIndex = table.getSelectedRow();
-//				String selectedID = model.getValueAt(rowIndex, 0).toString();
-//				int selectedIDint = Integer.parseInt(selectedID);
-//				
-//				Pol pol = Pol.valueOf(textField_5.getText());
-//				boolean obrisan = false;
-//
-//				Bibliotekar bibliotekarcina = biblioteka.getBibliotekari().get(rowIndex);
-//				Bibliotekar bibliotekarcina2 = new Bibliotekar(id, textField_1.getText(), textField_2.getText(),
-//						textField_3.getText(), textField_4.getText(), pol, textField_6.getText(),
-//						textField_7.getText(), textPlataDouble, obrisan);
-//
-//				for (int x = 0; x < biblioteka.getBibliotekari().size(); x++) {
-//					Bibliotekar current = biblioteka.getBibliotekari().get(x);
-//					if (current.getId() == bibliotekarcina2.getId()) {						
-//						JOptionPane.showMessageDialog(null, "Entitet sa istim id-om vec postoji", "Greska",
-//								JOptionPane.WARNING_MESSAGE);
-//						error = true;
-//							break;				
-//					}
-//				}
-//
-//				if (error != true) {
-//
-//					bibliotekarcina.setId(id);
-//					bibliotekarcina.setIme(textField_1.getText());
-//					bibliotekarcina.setPrezime(textField_2.getText());
-//					bibliotekarcina.setJMBG(textField_3.getText());
-//					bibliotekarcina.setAdresa(textField_4.getText());
-//					bibliotekarcina.setPol(pol);
-//					bibliotekarcina.setKorisnickoIme(textField_6.getText());
-//					bibliotekarcina.setKorisnickaSifra(textField_7.getText());
-//					bibliotekarcina.setPlata(textPlataDouble);
-//
-//
-//					model.setValueAt(bibliotekarcina.getId(), rowIndex, 0);
-//					model.setValueAt(bibliotekarcina.getIme(), rowIndex, 1);
-//					model.setValueAt(bibliotekarcina.getPrezime(), rowIndex, 2);
-//					model.setValueAt(bibliotekarcina.getJMBG(), rowIndex, 3);
-//					model.setValueAt(bibliotekarcina.getAdresa(), rowIndex, 4);
-//					model.setValueAt(bibliotekarcina.getPol(), rowIndex, 5);
-//					model.setValueAt(bibliotekarcina.getKorisnickoIme(), rowIndex, 6);
-//					model.setValueAt(bibliotekarcina.getKorisnickaSifra(), rowIndex, 7);
-//					model.setValueAt(bibliotekarcina.getPlata(), rowIndex, 8);
-//
-//					biblioteka.snimiBibliotekari();
-//					model.fireTableRowsInserted(rowIndex, selectedIDint);
-//					table.setModel(model);
-//					model.fireTableDataChanged();
-//				}
-//			}
-//
-//		} catch (ArrayIndexOutOfBoundsException e) {
-//			JOptionPane.showMessageDialog(null, "Izaberite red", "Greska", JOptionPane.WARNING_MESSAGE);
-//		} catch (NumberFormatException x) {
-//			JOptionPane.showMessageDialog(null, "Unesite broj kao input", "Greska",
-//					JOptionPane.WARNING_MESSAGE);
-//		}
-//	}
+	/* DODAJ */
+	public static boolean validacijaBroja(String str) { 
+        try { 
+                Integer.parseInt(str); 
+                return true; 
+        } catch (NumberFormatException e) { 
+                JOptionPane.showMessageDialog(null, "ID mora biti broj", "Error", JOptionPane.WARNING_MESSAGE); 
+                return false; 
+        } 
+}
+	
+	private void add_Row() {
+		try {
+			
+			boolean error = false;
+			int id = Integer.parseInt(textField.getText());
+			int godina = Integer.parseInt(textField_4.getText());
+			boolean obrisan = false;
+			int jedanZanr = Integer.parseInt(textField_7.getText());
+			ZanrKnjige zanr = null ;
+			biblioteka.ucitajZanr();
+			for(ZanrKnjige zanrovi : biblioteka.getZanrovi()) {
+				System.out.println(zanrovi.getId());
+				if(zanrovi.getId() == jedanZanr) {
+					zanr = zanrovi; 
+				}
+			}
+						
+			if (validacijaBroja(textField.getText()) == true) {
+				Knjiga knjiga2 = new Knjiga(id, textField_1.getText(), textField_2.getText(),
+						textField_3.getText(), godina, textField_5.getText(), textField_6.getText(),
+						zanr, obrisan);
+				
+				String[] zaglavlja = new String[] {"ID", "NASLOV", "ORIGINAL NASLOV", "PISAC", "GODINA OBJAVLJIVANJA", "JEZIK", "OPIS", "ZANR", "OBRISAN"};
+				
+				
+				Object[][] sadrzaj1 = new Object[biblioteka.getKnjige().size()][zaglavlja.length];
+				Object[] sadrzaj = new Object[zaglavlja.length];
+				
+				for (int x = 0; x < biblioteka.getKnjige().size(); x++) {
+					Knjiga knjiga = biblioteka.getKnjige().get(x);
+					sadrzaj1[x][0] = knjiga.getId();
+					if (sadrzaj1[x][0].equals(textField.getText())) {
+						JOptionPane.showMessageDialog(null, "Entitet sa istim id-om vec postoji", "Greska",
+								JOptionPane.WARNING_MESSAGE);
+						error = true;
+						break;
+					}
+
+				}
+				if (error != true) {
+					biblioteka.addKnjiga(knjiga2);
+					biblioteka.snimiKnjige();
+					
+					sadrzaj[0] = knjiga2.getId();
+					sadrzaj[1] = knjiga2.getNaslovKnjige();
+					sadrzaj[2] = knjiga2.getOriginalNaslovKnjige();
+					sadrzaj[3] = knjiga2.getPisac();
+					sadrzaj[4] = knjiga2.getGodinaObjavljivanja();
+					sadrzaj[5] = knjiga2.getJezikOriginala();
+					sadrzaj[6] = knjiga2.getOpis();
+					sadrzaj[7] = knjiga2.getZanr().getOpisZanra();
+					sadrzaj[8] = knjiga2.isJeObrisan() ;
+					biblioteka.snimiKnjige();
+					model.addRow(sadrzaj);
+					table.setModel(model);
+				}
+			}
+		}
+		 catch (NumberFormatException x) {
+			JOptionPane.showMessageDialog(null, "Uneli ste slovo u input polje za broj", "Greska",
+					JOptionPane.WARNING_MESSAGE);
+		}
+		
+	}
+	/* AZURIRAJ */
+
+	private void updateRow() {
+		try {
+			
+			String[] zaglavlja = new String[] {"ID", "NASLOV", "ORIGINAL NASLOV", "PISAC", "GODINA OBJAVLJIVANJA", "JEZIK", "OPIS", "ZANR", "OBRISAN"};
+			Object[][] sadrzaj1 = new Object[biblioteka.getKnjiga().size()][zaglavlja.length];
+			Object[] sadrzaj = new Object[zaglavlja.length];
+			String AJDIJCINA = textField.getText();
+			
+			if (validacijaBroja(AJDIJCINA) == true) {
+				boolean error = false;
+				int id = Integer.parseInt(textField.getText());
+				DefaultTableModel model = (DefaultTableModel) table.getModel();
+				int rowIndex = table.getSelectedRow();
+				String izabranID = model.getValueAt(rowIndex, 0).toString();
+				int izabranIDint = Integer.parseInt(izabranID);
+				boolean obrisan = false;
+				int godina = Integer.parseInt(textField_4.getText());
+				int jedanZanr = Integer.parseInt(textField_7.getText()); 
+				ZanrKnjige zanr = null ;
+				for(ZanrKnjige zanrovi : biblioteka.getZanrovi()) {
+					if(zanrovi.getId() == jedanZanr) {
+						zanr = zanrovi ;
+					}
+				}
+				
+				Knjiga knjiga = biblioteka.getKnjige().get(rowIndex);
+				Knjiga knjiga2 = new Knjiga(id, textField_1.getText(), textField_2.getText(),
+						textField_3.getText(), godina, textField_5.getText(), textField_6.getText(),
+						zanr, obrisan);
+
+
+				if (error != true) {
+					
+					knjiga.setId(id);
+					knjiga.setNaslovKnjige(textField_1.getText()); 
+					knjiga.setOriginalNaslovKnjige(textField_2.getText());			
+					knjiga.setPisac(textField_3.getText());
+					knjiga.setGodinaObjavljivanja(godina);
+					knjiga.setJezikOriginala(textField_5.getText());
+					knjiga.setOpis(textField_6.getText());
+					knjiga.setZanr(knjiga2.getZanr());
+					knjiga.setJeObrisan(obrisan);
+					
+					model.setValueAt(knjiga.getId(), rowIndex, 0);
+					model.setValueAt(knjiga.getNaslovKnjige(), rowIndex, 1);
+					model.setValueAt(knjiga.getOriginalNaslovKnjige(), rowIndex, 2);
+					model.setValueAt(knjiga.getPisac(), rowIndex, 3);
+					model.setValueAt(knjiga.getGodinaObjavljivanja(), rowIndex, 4);
+					model.setValueAt(knjiga.getJezikOriginala(), rowIndex, 5);
+					model.setValueAt(knjiga.getOpis(), rowIndex, 6);
+					model.setValueAt(knjiga.getZanr().getId(), rowIndex, 7);
+					model.setValueAt(knjiga.isJeObrisan(), rowIndex, 8);
+					
+					biblioteka.snimiKnjige();
+					model.fireTableRowsInserted(rowIndex, izabranIDint);
+					table.setModel(model);
+					model.fireTableDataChanged();
+				}
+			}
+
+		} catch (ArrayIndexOutOfBoundsException e) {
+			JOptionPane.showMessageDialog(null, "Izaberite red", "Greska", JOptionPane.WARNING_MESSAGE);
+		} catch (NumberFormatException x) {
+			JOptionPane.showMessageDialog(null, "Unesite broj kao input", "Greska",
+					JOptionPane.WARNING_MESSAGE);
+		}
+	}
 /* OBRISI */
-//	
-//	private void deleteRow() {
-//		try {
-//			DefaultTableModel model = (DefaultTableModel) table.getModel();
-//			int rowIndex = table.getSelectedRow();
-//			String selectedID = model.getValueAt(rowIndex, 0).toString();
-//			int selectedIDint = Integer.parseInt(selectedID);
-//			Bibliotekar bibliotekarcina = biblioteka.getBibliotekari1().get(rowIndex);
-//			bibliotekarcina.setJeObrisan(true);
-//			biblioteka.snimiAdministratore();
-//			
-//			textField.setText("");
-//			textField_1.setText("");
-//			textField_2.setText("");
-//			textField_3.setText("");
-//			textField_4.setText("");
-//			textField_5.setText("");
-//			textField_6.setText("");
-//			textField_7.setText("");
-//			textField_8.setText("");
-//			model.removeRow(selectedIDint);
-//			table.setModel(model);
-//			model.fireTableDataChanged();
-//
-//		}catch(ArrayIndexOutOfBoundsException x) {
-//			JOptionPane.showMessageDialog(null, "Izaberite red", "Greska", JOptionPane.WARNING_MESSAGE);
-//		}
-//		catch (Exception e) {
-//			JOptionPane.showMessageDialog(null, "Greska" + e, "Greska", JOptionPane.WARNING_MESSAGE);
-//		}
-//		}
+	
+	private void deleteRow() {
+		try {
+			DefaultTableModel model = (DefaultTableModel) table.getModel();
+			int rowIndex = table.getSelectedRow();
+			String izabranID = model.getValueAt(rowIndex, 0).toString();
+			int izabranIDint = Integer.parseInt(izabranID);
+			Knjiga knjiga = biblioteka.getKnjige().get(rowIndex);
+			knjiga.setJeObrisan(true);
+			
+			textField.setText("");
+			textField_1.setText("");
+			textField_2.setText("");
+			textField_3.setText("");
+			textField_4.setText("");
+			textField_5.setText("");
+			textField_6.setText("");
+			textField_7.setText("");
+			
+			model.removeRow(izabranIDint);
+			table.setModel(model);
+			model.fireTableDataChanged();
+
+		}catch(ArrayIndexOutOfBoundsException x) {
+			JOptionPane.showMessageDialog(null, "Izaberite red", "Greska", JOptionPane.WARNING_MESSAGE);
+		}
+		catch (Exception e) {
+			JOptionPane.showMessageDialog(null, "Greska" + e, "Greska", JOptionPane.WARNING_MESSAGE);
+		}
+		}
 	
 	
 	
@@ -244,7 +253,7 @@ public class KnjigaProzor extends JFrame {
 				aktivneKnjige.add(knjiga);
 			}
 		}
-		String[] zaglavlja = new String[] {"ID", "NASLOV", "PISAC", "GODINA OBJAVLJIVANJA",  "JEZIK", "OPIS"};
+		String[] zaglavlja = new String[] {"ID", "NASLOV", "ORIGINAL NASLOV", "PISAC", "GODINA OBJAVLJIVANJA", "JEZIK", "OPIS", "ZANR", "OBRISAN"};
 		Object[][] sadrzaj = new Object[aktivneKnjige.size()+1][zaglavlja.length];
 		
 		sadrzaj[0][0] = zaglavlja[0];
@@ -253,14 +262,22 @@ public class KnjigaProzor extends JFrame {
 		sadrzaj[0][3] = zaglavlja[3];
 		sadrzaj[0][4] = zaglavlja[4];
 		sadrzaj[0][5] = zaglavlja[5];
+		sadrzaj[0][6] = zaglavlja[6];
+		sadrzaj[0][7] = zaglavlja[7];
+		sadrzaj[0][8] = zaglavlja[8];
+		
 		for(int i=0; i<aktivneKnjige.size(); i++) {
 			Knjiga knjiga = aktivneKnjige.get(i);
 			sadrzaj[i+1][0] = knjiga.getId();
 			sadrzaj[i+1][1] = knjiga.getNaslovKnjige();
-			sadrzaj[i+1][2] = knjiga.getPisac();
-			sadrzaj[i+1][3] = knjiga.getGodinaObjavljivanja();
-			sadrzaj[i+1][4] = knjiga.getJezikOriginala();
-			sadrzaj[i+1][5] = knjiga.getOpis();
+			sadrzaj[i+1][2] = knjiga.getOriginalNaslovKnjige();
+			sadrzaj[i+1][3] = knjiga.getPisac();
+			sadrzaj[i+1][4] = knjiga.getGodinaObjavljivanja();
+			sadrzaj[i+1][5] = knjiga.getJezikOriginala();
+			sadrzaj[i+1][6] = knjiga.getOpis();
+			sadrzaj[i+1][7] = knjiga.getZanr().getId();
+			sadrzaj[i+1][8] = knjiga.isJeObrisan();
+			
 		}
 		this.model = new DefaultTableModel(sadrzaj, zaglavlja);
 		table = new JTable(this.model);
@@ -351,7 +368,7 @@ public class KnjigaProzor extends JFrame {
 		JButton btnNewButton = new JButton("UKLONI");
 		btnNewButton.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-				//deleteRow();
+				deleteRow();
 			}
 		});
 		btnNewButton.setBounds(434, 412, 182, 52);
@@ -360,22 +377,17 @@ public class KnjigaProzor extends JFrame {
 		JButton btnNewButton_1 = new JButton("AZURIRAJ");
 		btnNewButton_1.addActionListener(new ActionListener() {
             public void actionPerformed(ActionEvent e) {
-               // updateRow();
+                updateRow();
             }
         });
 		btnNewButton_1.setBounds(434, 349, 182, 52);
 		contentPane.add(btnNewButton_1);
 		
-//		btnNewButton_1.addActionListener(new ActionListener() {
-//			public void actionPerformed(ActionEvent e){
-//				System.out.println(aktivneKnjige.get(table.getSelectedRow()-1).getId());
-//			}
-//		});
 		
 		JButton btnNewButton_2 = new JButton("DODAJ");
 		btnNewButton_2.addActionListener(new ActionListener() {
 			public void actionPerformed(ActionEvent e) {
-			//	add_Row();
+				add_Row();
 			}
 		});
 		btnNewButton_2.setBounds(434, 286, 182, 52);

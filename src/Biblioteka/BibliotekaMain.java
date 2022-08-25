@@ -30,24 +30,24 @@ public class BibliotekaMain {
 		
 		biblioteka.ucitajClanove();
 		for(ClanBiblioteke clan : biblioteka.getClanovi()) {
-			System.out.println(clan.getPrezime());
+			System.out.println(""/*clan.getPrezime()*/);
 		}
 
 		biblioteka.ucitajZanr();
 		for(ZanrKnjige Zanr : biblioteka.getZanrovi()) {
-			System.out.println(Zanr.getOznaka());
+			System.out.println(Zanr.getId());
 		}
 		
 		biblioteka.ucitajKnjige();
 		for(Knjiga knjiga : biblioteka.getKnjige()) {
-			System.out.println(knjiga.getNaslovKnjige());
+			System.out.println(""/*knjiga.getNaslovKnjige()*/);
 		}
 		
-//		biblioteka.ucitajPrimerakKnjige();
-//		for(PrimerakKnjige primerak : biblioteka.getPrimerciKnjiga()) {
-//			System.out.println("Bilo sta");
-//		}
-//		
+		biblioteka.ucitajPrimerakKnjige();
+		for(PrimerakKnjige primerak : biblioteka.getPrimerciKnjiga()) {
+			System.out.println("Bilo sta");
+		}
+		
 		GlavniProzor lp = new GlavniProzor(biblioteka);
 		lp.setVisible(true);
 	}
