@@ -2,6 +2,7 @@ package gui;
 
 import java.awt.Color;
 import java.awt.EventQueue;
+import java.awt.HeadlessException;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
@@ -12,17 +13,14 @@ import javax.swing.JMenuItem;
 import javax.swing.JPanel;
 
 import Biblioteka.Biblioteka;
+import Osobe.Administrator;
+import Osobe.Bibliotekar;
+import Osobe.Zaposleni;
 
 public class GlavniProzor extends JFrame {
-
+	private Zaposleni prijavljeniZaposleni;
+	private boolean admin = false;
 	private JPanel contentPane;
-
-	/**
-	 * Launch the application.
-	 */
-
-
-
 	private JMenuBar mainMenu = new JMenuBar();
 	private JMenu osobeMenu = new JMenu("Osobe");
 	private JMenuItem adminiItem = new JMenuItem("Admini");
@@ -32,9 +30,8 @@ public class GlavniProzor extends JFrame {
 	private JMenuItem knjigeItem = new JMenuItem("Knjige");
 	private JMenuItem zanrItem = new JMenuItem("Zanr");
 	private JMenuItem primerakKnjigeItem = new JMenuItem("Primerak Knjige");
-//	private JMenuItem clanarinaItem = new JMenuItem("Tip Clanarine");
-
 	private Biblioteka biblioteka;
+
 
 	private void initMenu() {
 		setJMenuBar(mainMenu);
@@ -46,10 +43,9 @@ public class GlavniProzor extends JFrame {
 		knjigeMenu.add(knjigeItem);
 		knjigeMenu.add(zanrItem);
 		knjigeMenu.add(primerakKnjigeItem);
-	//	knjigeMenu.add(clanarinaItem);
-
 	}
-	public GlavniProzor(Biblioteka biblioteka) {
+	
+	public GlavniProzor(Biblioteka biblioteka, Zaposleni prijavljeniZaposleni, boolean daLiJeAdmin) {
 		getContentPane().setBackground(new Color(192, 192, 192));
 		setBounds(100, 100, 450, 300);
 		setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -64,7 +60,9 @@ public class GlavniProzor extends JFrame {
 	}
 	
 	
+	
 	private void initActions() {
+				
 		adminiItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
@@ -116,8 +114,6 @@ public class GlavniProzor extends JFrame {
 				PrimerakKnjigeProzor pk = new PrimerakKnjigeProzor(biblioteka);
 				pk.setVisible(true);
 			}
-		});
-	
-		
+		});		
 	}
 }

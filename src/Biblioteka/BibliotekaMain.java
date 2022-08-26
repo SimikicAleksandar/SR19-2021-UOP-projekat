@@ -9,6 +9,7 @@ import Osobe.ClanBiblioteke;
 import Osobe.Pol;
 import Osobe.TipClanarine;
 import gui.GlavniProzor;
+import gui.LoginProzor;
 import knjige.Knjiga;
 import knjige.PrimerakKnjige;
 import knjige.ZanrKnjige;
@@ -16,7 +17,11 @@ import knjige.ZanrKnjige;
 public class BibliotekaMain {
 	public static String ADMINI_FAJL = "src/fajlovi/administratori.txt";
 	public static void main(String[] args) {
+		
 		Biblioteka biblioteka = Biblioteka.ucitajBiblioteku();
+		
+		LoginProzor loginProzor = new LoginProzor(biblioteka);
+        loginProzor.setVisible(true);
 		
 		biblioteka.ucitajAdministratore();
 		for(Administrator administrator : biblioteka.getAdministratori()) {
@@ -47,9 +52,7 @@ public class BibliotekaMain {
 		for(PrimerakKnjige primerak : biblioteka.getPrimerciKnjiga()) {
 			System.out.println("Bilo sta");
 		}
-		
-		GlavniProzor lp = new GlavniProzor(biblioteka);
-		lp.setVisible(true);
+			
 	}
 	
 

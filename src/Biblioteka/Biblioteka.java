@@ -731,7 +731,25 @@ public class Biblioteka {
 		return sviprimeri;
 	}
 	
-	
+	// ADMIN LOGIN I BIBLIOTEKAR LOGIN TREBA ZA LOGIN PROZOR KONJU
+	public Administrator adminLogin(String korisnickoIme, String lozinka) {
+        for (Administrator admin : administratori) {
+            if (admin.getKorisnickoIme().equalsIgnoreCase(korisnickoIme) && admin.getKorisnickaSifra().equals(lozinka)) {
+                return admin;
+            }
+        }
+        return null;
+    }
+
+    public Bibliotekar bibliotekarLogin(String korisnickoIme, String lozinka) {
+        for (Bibliotekar bibliotekar : bibliotekari) {
+            if (bibliotekar.getKorisnickoIme().equalsIgnoreCase(korisnickoIme)
+                    && bibliotekar.getKorisnickaSifra().equals(lozinka)) {
+                return bibliotekar;
+            }
+        }
+        return null;
+    }
 	
 	
 	
