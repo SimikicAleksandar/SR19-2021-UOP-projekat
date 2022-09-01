@@ -30,6 +30,7 @@ public class GlavniProzor extends JFrame {
 	private JMenuItem knjigeItem = new JMenuItem("Knjige");
 	private JMenuItem zanrItem = new JMenuItem("Zanr");
 	private JMenuItem primerakKnjigeItem = new JMenuItem("Primerak Knjige");
+	private JMenuItem izdavanjeItem = new JMenuItem("Izdavanje");
 	private Biblioteka biblioteka;
 
 
@@ -43,6 +44,8 @@ public class GlavniProzor extends JFrame {
 		knjigeMenu.add(knjigeItem);
 		knjigeMenu.add(zanrItem);
 		knjigeMenu.add(primerakKnjigeItem);
+		mainMenu.add(izdavanjeItem);
+		
 	}
 	
 	public GlavniProzor(Biblioteka biblioteka, Zaposleni prijavljeniZaposleni, boolean daLiJeAdmin) {
@@ -114,6 +117,15 @@ public class GlavniProzor extends JFrame {
 				PrimerakKnjigeProzor pk = new PrimerakKnjigeProzor(biblioteka);
 				pk.setVisible(true);
 			}
-		});		
+		});
+		
+		izdavanjeItem.addActionListener(new ActionListener() {
+            @Override
+            public void actionPerformed(ActionEvent e) {
+                IzdavanjeProzor ip = new IzdavanjeProzor(biblioteka);
+                ip.setVisible(true);
+                
+            }
+        });
 	}
 }

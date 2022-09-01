@@ -15,6 +15,8 @@ import Osobe.Bibliotekar;
 import Osobe.ClanBiblioteke;
 import Osobe.Pol;
 import Osobe.TipClanarine;
+import Osobe.Zaposleni;
+import knjige.Izdavanje;
 import knjige.Knjiga;
 import knjige.PrimerakKnjige;
 import knjige.TipPoveza;
@@ -33,7 +35,7 @@ public class Biblioteka {
 	private ArrayList<PrimerakKnjige> primerciKnjiga;
 	private ArrayList<ZanrKnjige> zanrovi;
 	private ArrayList<TipClanarine> tipovi;
-	
+	private ArrayList<Izdavanje> izdavanja;
 	public String getNaziv() {
 		return naziv;
 	}
@@ -64,6 +66,19 @@ public class Biblioteka {
 	public void setTipovi(ArrayList<TipClanarine> tipovi) {
 		this.tipovi = tipovi;
 	}
+	/*ISPOD JE LISTA ZA IZDAVANJE*/
+	public void setIzdavanja(ArrayList<Izdavanje> izdavanja) {
+		this.izdavanja = izdavanja;
+	}
+	
+	public ArrayList<Izdavanje> getIzdavanja() {
+        return izdavanja;
+    }
+    public void addIzdavanje(Izdavanje izdavanje){
+        izdavanja.add(izdavanje);        
+    }
+/////////////////////////////////////////////////////////////////////	
+	
 	public Biblioteka(String naziv2, String adresa2, String telefon2, String radnoVreme2) {
 		super();
 		this.administratori = new ArrayList<Administrator>();
@@ -73,6 +88,7 @@ public class Biblioteka {
 		this.primerciKnjiga = new ArrayList<PrimerakKnjige>();
 		this.zanrovi = new ArrayList<ZanrKnjige>();
 		this.tipovi = new ArrayList <TipClanarine>();
+		this.izdavanja = new ArrayList<Izdavanje>();
 	}
 	public ArrayList<Administrator> getAdministratori() {
 		return administratori;
@@ -127,15 +143,12 @@ public class Biblioteka {
 				String telefon = lineSplit[2];
 				String radnoVreme = lineSplit[3];
 				Biblioteka biblioteka = new Biblioteka(naziv, adresa, telefon, radnoVreme);
-				return biblioteka;
-
-				
+				return biblioteka;		
 			}
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
 		}
 		return null;
-
 	}
 	
 	public void upisiBiblioteku() {
@@ -148,9 +161,7 @@ public class Biblioteka {
 			writer.close();
 		} catch (IOException e) {
 			System.out.println("Greska prilikom ucitavanja datoteke: " + e.getMessage());
-		}
-		
-		 
+		} 
 	}
 	
 	//Funkcije za ucitavanje i snimanje Administratora
@@ -750,7 +761,94 @@ public class Biblioteka {
         }
         return null;
     }
+    
+//////////////////////////////////////////////////////////////////////////////////////////////////////////
+								/*PROVERA ID-ja za izdavanje*/    
+    public Administrator nadjiIdAdministratora(int ID) {
+		for (Administrator administrator : administratori) {
+			if (administrator.getId() == ID) {
+				return administrator;
+			}
+		}
+		return null;
+	}
 	
+	public Bibliotekar nadjiIdBibliotekara(int ID) {
+		for (Bibliotekar bibliotekar : bibliotekari) {
+			if (bibliotekar.getId() == ID) {
+				return bibliotekar;
+			}
+		}
+		return null;
+	}
 	
+	public ClanBiblioteke nadjiIdClana(int ID) {
+		for (ClanBiblioteke clan : clanovi) {
+			if (clan.getId() == ID) {
+				return clan;
+			}
+		}
+		return null;
+	}
+	
+	public PrimerakKnjige nadjiIdPrimerka(int ID) {
+		for (PrimerakKnjige primerakKnjige : primerciKnjiga) {
+			if (primerakKnjige.getId() == ID) {
+				return primerakKnjige;
+				
+			}
+		}
+		return null;
+	}
+	
+	public String ucitajIzdavanja() {
+		try {
+			this.ucitajPrimerakKnjige();
+			File file = new File("src/fajlovi/izdavanja.txt");
+			BufferedReader reader = new BufferedReader(new FileReader(file));
+			String line = null;
+			while ((line = reader.readLine()) != null) {
+				String[] lineSplit = line.split("\\|");
+				String stringIdZaposlenog = lineSplit[0];
+				String stringIdClana = lineSplit[1];
+				String stringIdPrimerka = lineSplit[2];
+				String stringDatumIznajmljivanja = lineSplit[3];
+				String stringDatumVracanja = lineSplit[4];
+				Zaposleni zaposleni;
+
+				zaposleni = this.nadjiIdAdministratora(Integer.parseInt(stringIdZaposlenog));
+				if (zaposleni == null) {
+					zaposleni = this.nadjiIdBibliotekara(Integer.parseInt(stringIdZaposlenog));
+				}
+
+				Izdavanje izdavanje = new Izdavanje(zaposleni, this.nadjiIdClana(Integer.parseInt(stringIdClana)),
+						this.nadjiIdPrimerka(Integer.parseInt(stringIdPrimerka)), LocalDate.parse(stringDatumIznajmljivanja),
+						LocalDate.parse(stringDatumVracanja));				
+				izdavanja.add(izdavanje);	
+			}
+			reader.close();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
+	////////////
+	
+	//////////
+	public void snimiIzdavanja() {
+		try {
+			File file = new File("src/fajlovi/" + "izdavanja.txt");
+			String content = "";
+			for (Izdavanje izdavanje : izdavanja) {
+				content += izdavanje.getZaposleni().getId() +  "|" + izdavanje.getClanovi().getId() + "|"+ 
+						izdavanje.getPrimerak().getId()+"|"+ izdavanje.getDatumIznajmljivanja() + "|" + izdavanje.getDatumVracanja()+ "\n";
+			}
+			BufferedWriter writer = new BufferedWriter(new FileWriter(file));
+			writer.write(content);
+			writer.close();
+		} catch (IOException e) {
+			System.out.println("Greska prilikom snimanja Izdavanja!");
+		}
+	}
 	
 }
